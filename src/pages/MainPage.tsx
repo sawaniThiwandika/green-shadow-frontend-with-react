@@ -8,7 +8,7 @@ import { UserPage } from "./UserPage";
 import { Navigation } from "../components/Naviagtions.tsx";
 import {EquipmentPage} from "./EquipmentPage.tsx";
 import {LogsPage} from "./LogsPage.tsx";
-import {StaffPage} from "./StaffPage.tsx";  // Sidebar component
+import {StaffPage} from "./StaffPage.tsx";
 
 export function MainPage() {
     return (
