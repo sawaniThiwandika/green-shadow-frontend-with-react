@@ -1,7 +1,4 @@
-export function DashboardPage() {
-
-
-
+export function Dashboard() {
 
     return (
         <>
