@@ -1,49 +1,54 @@
-import React, { useState } from 'react';
-import { FaPlus, FaSearch } from 'react-icons/fa';
-import logo from '../assets/logo.png';
+import React, { useState } from "react";
+import { FaPlus, FaSearch } from "react-icons/fa";
+import logo from "../assets/logo.png";
+import { ModalComponent } from "../components/ModalComponent.tsx";
+import { CropForm } from "../components/forms/CropForm";
 
-export function CropPage() {
+export interface Crop {
+    cropCode: string;
+    commonName: string;
+    scientificName: string;
+    image: string;
+    category: string;
+    season: string;
+    fieldDetails: string;
+}
+
+export function CropPage(){
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const crops = [
+    const crops: Crop[] = [
         {
-            cropCode: 'C123',
-            commonName: 'Rice',
-            scientificName: 'Oryza sativa',
+            cropCode: "C123",
+            commonName: "Rice",
+            scientificName: "Oryza sativa",
             image: logo,
-            category: 'Cereal',
-            season: 'Summer',
-            fieldDetails: 'Field 1',
+            category: "Cereal",
+            season: "Summer",
+            fieldDetails: "Field 1",
         },
         {
-            cropCode: 'C124',
-            commonName: 'Wheat',
-            scientificName: 'Triticum aestivum',
+            cropCode: "C124",
+            commonName: "Wheat",
+            scientificName: "Triticum aestivum",
             image: logo,
-            category: 'Cereal',
-            season: 'Winter',
-            fieldDetails: 'Field 2',
+            category: "Cereal",
+            season: "Winter",
+            fieldDetails: "Field 2",
         },
         {
-            cropCode: 'C125',
-            commonName: 'Tomato',
-            scientificName: 'Solanum lycopersicum',
+            cropCode: "C125",
+            commonName: "Tomato",
+            scientificName: "Solanum lycopersicum",
             image: logo,
-            category: 'Vegetable',
-            season: 'Spring',
-            fieldDetails: 'Field 3',
+            category: "Vegetable",
+            season: "Spring",
+            fieldDetails: "Field 3",
         },
     ];
 
-
-
-    const handleAddButton = () => {
-        setIsModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
+    const handleAddButton = () => setIsModalOpen(true);
+    const handleCloseModal = () => setIsModalOpen(false);
 
     return (
         <div className="container mx-auto my-5 px-4">
@@ -90,115 +95,9 @@ export function CropPage() {
                 ))}
             </div>
 
-            {isModalOpen && (
-                <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-                    id="addCropModal"
-                >
-                    <div className="bg-white p-6 rounded-lg shadow-xl w-full md:w-1/2 lg:w-1/3">
-                        <div className="flex justify-between items-center">
-                            <h5 className="text-lg font-semibold">Add New Crop</h5>
-                            <button
-                                type="button"
-                                className="text-gray-500 hover:text-gray-700"
-                                onClick={handleCloseModal}
-                            >
-                                &times;
-                            </button>
-                        </div>
-
-                        <form className="space-y-4 mt-4">
-                            <div>
-                                <label htmlFor="cropCode" className="block text-sm font-medium text-gray-700">
-                                    Crop Code
-                                </label>
-                                <input
-                                    type="text"
-                                    id="cropCode"
-                                    className="w-full p-2 border border-gray-300 rounded-md"
-                                    placeholder="Enter unique crop code"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="commonName" className="block text-sm font-medium text-gray-700">
-                                    Common Name
-                                </label>
-                                <input
-                                    type="text"
-                                    id="commonName"
-                                    className="w-full p-2 border border-gray-300 rounded-md"
-                                    placeholder="Enter common name of the crop"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="scientificName" className="block text-sm font-medium text-gray-700">
-                                    Scientific Name
-                                </label>
-                                <input
-                                    type="text"
-                                    id="scientificName"
-                                    className="w-full p-2 border border-gray-300 rounded-md"
-                                    placeholder="Enter scientific name of the crop"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="cropImage" className="block text-sm font-medium text-gray-700">
-                                    Crop Image URL
-                                </label>
-                                <input
-                                    type="file"
-                                    id="cropImage"
-                                    className="w-full p-2 border border-gray-300 rounded-md"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="category" className="block text-sm font-medium text-gray-700">
-                                    Category
-                                </label>
-                                <input
-                                    type="text"
-                                    id="category"
-                                    className="w-full p-2 border border-gray-300 rounded-md"
-                                    placeholder="Enter category (e.g., Cereal)"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="season" className="block text-sm font-medium text-gray-700">
-                                    Season
-                                </label>
-                                <input
-                                    type="text"
-                                    id="season"
-                                    className="w-full p-2 border border-gray-300 rounded-md"
-                                    placeholder="Enter season of the crop"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="fieldDetailsCrop" className="block text-sm font-medium text-gray-700">
-                                    Field Details
-                                </label>
-                                <input
-                                    type="search"
-                                    id="fieldDetailsCrop"
-                                    className="w-full p-2 border border-gray-300 rounded-md"
-                                    placeholder="Enter field details"
-                                    required
-                                />
-                            </div>
-
-                            <button type="submit" className="w-full py-2 mt-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600">
-                                Add Crop
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            )}
+            <ModalComponent isOpen={isModalOpen} onClose={handleCloseModal}>
+                <CropForm />
+            </ModalComponent>
         </div>
     );
 }
