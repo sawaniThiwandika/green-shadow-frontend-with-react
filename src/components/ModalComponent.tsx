@@ -25,12 +25,7 @@ export function ModalComponent({ title, isOpen, onClose, children }) {
                     >
                         Cancel
                     </button>
-                    <button
-                        type="submit"
-                        className="px-4 py-2 bg-green-700 text-white rounded-md hover:bg-green-800"
-                    >
-                        Submit
-                    </button>
+
                 </div>
             </div>
         </div>
