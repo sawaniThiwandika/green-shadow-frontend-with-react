@@ -4,10 +4,12 @@ import { FaSearch } from "react-icons/fa";
 import { BiPlus } from "react-icons/bi";
 import { ModalComponent } from "../components/ModalComponent";
 import { StaffFormComponent } from "../components/forms/StaffFormComponent";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { StaffModel } from "../model/StaffModel.ts";
+import {deleteStaff} from "../slices/StaffSlice.ts";
 
 export function StaffPage() {
+    const dispatch=useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedStaff, setSelectedStaff] = useState(null);
@@ -37,6 +39,7 @@ export function StaffPage() {
     const handleDelete = (record) => {
         const confirmed = window.confirm(`Are you sure you want to delete ${record.name}?`);
         if (confirmed) {
+            dispatch(deleteStaff(record));
             console.log(`Deleting staff with ID: ${record.staffId}`);
         }
     };
@@ -71,9 +74,15 @@ export function StaffPage() {
         },
     ];
 
-    const handleAddButton = () => setIsModalOpen(true);
-    const handleModalClose = () => setIsModalOpen(false);
+    const handleAddButton = () => {
+        setSelectedStaff(null);
+        setIsModalOpen(true);
+    };
 
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+        setSelectedStaff(null);
+    };
     const handleFormSubmit = (e) => {
         handleModalClose();
     };
@@ -109,21 +118,13 @@ export function StaffPage() {
             </div>
             <TableComponent dataSource={filteredDataSource} columns={columns} />
             <ModalComponent
-                title="Add New Staff"
-                isOpen={isModalOpen}
-                onClose={handleModalClose}
-            >
-                <StaffFormComponent onSubmit={handleFormSubmit} />
-            </ModalComponent>
-
-            <ModalComponent
-                title="Update Staff"
+                title={selectedStaff ? "Update Staff" : "Add New Staff"}
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
             >
                 <StaffFormComponent
                     onSubmit={handleFormSubmit}
-                    initialData={selectedStaff} // Pass the selected staff
+                    initialData={selectedStaff}
                 />
             </ModalComponent>
         </div>

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { StaffModel } from "../../model/StaffModel";
 import { useDispatch } from "react-redux";
-import { addStaff } from "../../slices/StaffSlice.ts";
+import {addStaff, updateStaff} from "../../slices/StaffSlice.ts";
 
 export function StaffFormComponent({ onSubmit, initialData }) {
     const dispatch = useDispatch();
@@ -29,7 +29,8 @@ export function StaffFormComponent({ onSubmit, initialData }) {
     }, [initialData]);
 
     function handleSubmit() {
-        const staff = new StaffModel(
+
+        const staffData = new StaffModel(
             staffId,
             firstName,
             lastName,
@@ -39,9 +40,19 @@ export function StaffFormComponent({ onSubmit, initialData }) {
             contact,
             email
         );
-        console.log("Submitting staff data: ", staff);
-        dispatch(addStaff(staff));
-        if (onSubmit) onSubmit(staff);
+
+        if (staffId && staffId === initialData?.staffId) {
+
+            dispatch(updateStaff(staffData));
+            console.log("Update staff: ", staffData);
+
+        } else {
+
+            dispatch(addStaff(staffData));
+            console.log("Add new:  ", staffData);
+        }
+
+        if (onSubmit) onSubmit(staffData);
     }
 
     return (
