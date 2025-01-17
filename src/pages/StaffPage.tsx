@@ -4,12 +4,12 @@ import { FaSearch } from "react-icons/fa";
 import { BiPlus } from "react-icons/bi";
 import { ModalComponent } from "../components/ModalComponent";
 import { StaffFormComponent } from "../components/forms/StaffFormComponent";
-import {useSelector} from "react-redux";
-import {StaffModel} from "../model/StaffModel.ts";
+import { useSelector } from "react-redux";
+import { StaffModel } from "../model/StaffModel.ts";
 
 export function StaffPage() {
-
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const staffList = useSelector((state: any) => state.staffSlice.staff);
     const dataSource = staffList.map((staff: StaffModel, index: number) => ({
@@ -19,22 +19,13 @@ export function StaffPage() {
         contactNo: staff.contact,
         email: staff.email,
     }));
-    /*const dataSource = [
-        {
-            key: "1",
-            staffId: "S001",
-            name: "Thiwandika",
-            contactNo: "0716258026",
-            email: "thiwandika.whs@gmail.com",
-        },
-        {
-            key: "2",
-            staffId: "S002",
-            name: "Sawani",
-            contactNo: "0763519008",
-            email: "sawani.wh@gmail.com",
-        },
-    ];*/
+
+    const filteredDataSource = dataSource.filter((staff) =>
+        staff.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        staff.staffId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        staff.contactNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        staff.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     const columns = [
         { title: "Staff ID", dataIndex: "staffId", key: "staffId" },
@@ -44,9 +35,6 @@ export function StaffPage() {
         {
             title: "Action",
             key: "update",
-            fixed: "right",
-            width: 100,
-            className: "action",
             render: () => (
                 <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
                     UPDATE
@@ -56,16 +44,12 @@ export function StaffPage() {
         {
             title: "Action",
             key: "delete",
-            fixed: "right",
-            width: 100,
-            className: "action",
             render: () => (
                 <button className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
                     DELETE
                 </button>
             ),
         },
-
     ];
 
     const handleAddButton = () => setIsModalOpen(true);
@@ -87,6 +71,8 @@ export function StaffPage() {
                         <input
                             type="text"
                             placeholder="Search"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             className="outline-none px-2 py-1 w-full"
                         />
                     </div>
@@ -102,7 +88,7 @@ export function StaffPage() {
                     </button>
                 </div>
             </div>
-            <TableComponent dataSource={dataSource} columns={columns} />
+            <TableComponent dataSource={filteredDataSource} columns={columns} />
             <ModalComponent
                 title="Add New Staff"
                 isOpen={isModalOpen}
