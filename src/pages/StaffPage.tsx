@@ -41,8 +41,31 @@ export function StaffPage() {
         { title: "Name", dataIndex: "name", key: "name" },
         { title: "Contact No.", dataIndex: "contactNo", key: "contactNo" },
         { title: "Email", dataIndex: "email", key: "email" },
-        { title: "Update", key: "update" },
-        { title: "Delete", key: "delete" },
+        {
+            title: "Action",
+            key: "update",
+            fixed: "right",
+            width: 100,
+            className: "action",
+            render: () => (
+                <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                    UPDATE
+                </button>
+            ),
+        },
+        {
+            title: "Action",
+            key: "delete",
+            fixed: "right",
+            width: 100,
+            className: "action",
+            render: () => (
+                <button className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                    DELETE
+                </button>
+            ),
+        },
+
     ];
 
     const handleAddButton = () => setIsModalOpen(true);

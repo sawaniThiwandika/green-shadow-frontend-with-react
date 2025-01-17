@@ -1,34 +1,48 @@
-import React from 'react';
+import React from "react";
 
 export function TableComponent({ dataSource, columns }) {
     return (
-        <table className="min-w-full table-auto border-collapse shadow-md rounded-lg mt-10">
-            <thead>
-            <tr>
-                {columns.map((column) => (
-                    <th
-                        key={column.key}
-                        className="px-4 py-2 text-left text-sm font-semibold text-gray-700 bg-green-100"
-                    >
-                        {column.title}
-                    </th>
-                ))}
-            </tr>
-            </thead>
-            <tbody>
-            {dataSource.map((data) => (
-                <tr key={data.key} className="border-t hover:bg-green-50">
+        <div className="overflow-x-auto shadow-md rounded-lg">
+            <table className="min-w-full table-auto border-collapse mt-6">
+                <thead>
+                <tr>
                     {columns.map((column) => (
-                        <td
+                        <th
                             key={column.key}
-                            className="px-4 py-2 text-sm text-gray-600"
-                        >
-                            {data[column.dataIndex]}
-                        </td>
+                            className="px-4 py-2 text-left text-sm font-semibold text-gray-700 bg-green-100">
+                            {column.title}
+                        </th>
                     ))}
                 </tr>
-            ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {dataSource.length > 0 ? (
+                    dataSource.map((data) => (
+                        <tr key={data.key} className="border-t even:bg-gray-50 hover:bg-green-50">
+                            {columns.map((column) => (
+                                <td
+                                    key={column.key}
+                                    className="px-4 py-2 text-sm text-gray-600"
+                                >
+                                    {column.render
+                                        ? column.render(data)
+                                        : data[column.dataIndex]}
+                                </td>
+                            ))}
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                        <td
+                            colSpan={columns.length}
+                            className="px-4 py-4 text-center text-gray-500"
+                        >
+                            No data available.
+                        </td>
+                    </tr>
+                )}
+                </tbody>
+            </table>
+        </div>
     );
 }
