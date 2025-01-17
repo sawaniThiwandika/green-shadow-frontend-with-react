@@ -1,22 +1,34 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { StaffModel } from "../../model/StaffModel";
 import { useDispatch } from "react-redux";
 import { addStaff } from "../../slices/StaffSlice.ts";
 
-export function StaffFormComponent({ onSubmit }) {
+export function StaffFormComponent({ onSubmit, initialData }) {
     const dispatch = useDispatch();
 
-    const [staffId, setStaffId] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [address, setAddress] = useState("");
-    const [email, setEmail] = useState("");
-    const [contact, setContact] = useState("");
-    const [designation, setDesignation] = useState("");
-    const [gender, setGender] = useState("");
+    const [staffId, setStaffId] = useState(initialData?.staffId || "");
+    const [firstName, setFirstName] = useState(initialData?.firstName || "");
+    const [lastName, setLastName] = useState(initialData?.lastName || "");
+    const [address, setAddress] = useState(initialData?.address || "");
+    const [email, setEmail] = useState(initialData?.email || "");
+    const [contact, setContact] = useState(initialData?.contact || "");
+    const [designation, setDesignation] = useState(initialData?.designation || "");
+    const [gender, setGender] = useState(initialData?.gender || "");
+
+    useEffect(() => {
+        if (initialData) {
+            setStaffId(initialData.staffId || "");
+            setFirstName(initialData.firstName || "");
+            setLastName(initialData.lastName || "");
+            setAddress(initialData.address || "");
+            setEmail(initialData.email || "");
+            setContact(initialData.contact || "");
+            setDesignation(initialData.designation || "");
+            setGender(initialData.gender || "");
+        }
+    }, [initialData]);
 
     function handleSubmit() {
-
         const staff = new StaffModel(
             staffId,
             firstName,
@@ -27,8 +39,9 @@ export function StaffFormComponent({ onSubmit }) {
             contact,
             email
         );
-        console.log("before call dispatch "+staff.firstName);
+        console.log("Submitting staff data: ", staff);
         dispatch(addStaff(staff));
+        if (onSubmit) onSubmit(staff);
     }
 
     return (

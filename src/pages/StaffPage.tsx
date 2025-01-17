@@ -10,6 +10,7 @@ import { StaffModel } from "../model/StaffModel.ts";
 export function StaffPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [selectedStaff, setSelectedStaff] = useState(null);
 
     const staffList = useSelector((state: any) => state.staffSlice.staff);
     const dataSource = staffList.map((staff: StaffModel, index: number) => ({
@@ -27,6 +28,19 @@ export function StaffPage() {
         staff.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const handleUpdate = (record) => {
+        const staffMember = staffList.find(staffMem => staffMem.staffId === record.staffId);
+        setSelectedStaff(staffMember);
+        console.log("update "+record.staffId);
+        setIsModalOpen(true);
+    };
+    const handleDelete = (record) => {
+        const confirmed = window.confirm(`Are you sure you want to delete ${record.name}?`);
+        if (confirmed) {
+            console.log(`Deleting staff with ID: ${record.staffId}`);
+        }
+    };
+
     const columns = [
         { title: "Staff ID", dataIndex: "staffId", key: "staffId" },
         { title: "Name", dataIndex: "name", key: "name" },
@@ -35,8 +49,10 @@ export function StaffPage() {
         {
             title: "Action",
             key: "update",
-            render: () => (
-                <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+            render: (record:any) => (
+                <button
+                    onClick={()=>handleUpdate(record)}
+                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
                     UPDATE
                 </button>
             ),
@@ -44,8 +60,11 @@ export function StaffPage() {
         {
             title: "Action",
             key: "delete",
-            render: () => (
-                <button className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+            render: (record:any) => (
+
+                <button
+                    onClick={()=>handleDelete(record)}
+                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
                     DELETE
                 </button>
             ),
@@ -95,6 +114,17 @@ export function StaffPage() {
                 onClose={handleModalClose}
             >
                 <StaffFormComponent onSubmit={handleFormSubmit} />
+            </ModalComponent>
+
+            <ModalComponent
+                title="Update Staff"
+                isOpen={isModalOpen}
+                onClose={handleModalClose}
+            >
+                <StaffFormComponent
+                    onSubmit={handleFormSubmit}
+                    initialData={selectedStaff} // Pass the selected staff
+                />
             </ModalComponent>
         </div>
     );
