@@ -4,15 +4,14 @@ export class FieldModel {
     fieldCode: string;
     fieldName: string;
     fieldLocation: string;
-    fieldSize: number;
+    fieldSize: string;
     fieldImage1: string;
     fieldImage2: string;
     crops: string[];
     staff: string[];
-    equipments: string[];
-    logs: string[];
 
-    constructor(fieldCode: string, fieldName: string, fieldLocation: string, fieldSize: number, fieldImage1: string, fieldImage2: string, crops: string[], staff: string[], equipments: string[], logs: string[]) {
+
+    constructor(fieldCode: string, fieldName: string, fieldLocation: string, fieldSize: string, fieldImage1: string, fieldImage2: string, crops: string[], staff: string[]) {
         this.fieldCode = fieldCode;
         this.fieldName = fieldName;
         this.fieldLocation = fieldLocation;
@@ -21,8 +20,7 @@ export class FieldModel {
         this.fieldImage2 = fieldImage2;
         this.crops = crops;
         this.staff = staff;
-        this.equipments = equipments;
-        this.logs = logs;
+
     }
 
 

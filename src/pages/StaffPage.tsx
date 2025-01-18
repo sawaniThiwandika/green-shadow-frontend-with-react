@@ -88,7 +88,7 @@ export function StaffPage() {
     };
 
     return (
-        <div className="container mx-auto p-6">
+        <div className="container mx-auto p-6"    style={{ maxHeight: "calc(100vh - 100px)" }}>
             <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
                 <h1 className="text-3xl font-bold text-gray-800 mt-3">Staff Page</h1>
             </div>

@@ -8,8 +8,8 @@ export function FieldCard({
                               fieldImage1,
                               crops,
                               staff,
-                              equipments,
-                              logs,
+                              onUpdate,
+                              onDelete,
                           }: {
     fieldCode: string;
     fieldName: string;
@@ -18,8 +18,8 @@ export function FieldCard({
     fieldImage1: string;
     crops: string[];
     staff: string[];
-    equipments: string[];
-    logs: string[];
+    onUpdate: (fieldCode: string) => void;
+    onDelete: (fieldCode: string) => void;
 }) {
     return (
         <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 hover:shadow-xl">
@@ -46,14 +46,19 @@ export function FieldCard({
                 <p className="text-sm text-gray-500">{staff.join(", ")}</p>
             </div>
 
-            <div className="mt-2">
-                <strong>Equipments:</strong>
-                <p className="text-sm text-gray-500">{equipments.join(", ")}</p>
-            </div>
-
-            <div className="mt-2">
-                <strong>Logs:</strong>
-                <p className="text-sm text-gray-500">{logs.join(", ")}</p>
+            <div className="flex justify-between mt-4">
+                <button
+                    onClick={() => onUpdate(fieldCode)}
+                    className="px-3 py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                >
+                    Update
+                </button>
+                <button
+                    onClick={() => onDelete(fieldCode)}
+                    className="px-3 py-2 text-sm bg-red-500 text-white rounded-md hover:bg-red-600"
+                >
+                    Delete
+                </button>
             </div>
         </div>
     );
