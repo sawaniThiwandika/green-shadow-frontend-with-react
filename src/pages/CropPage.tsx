@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import logo from "../assets/logo.png";
-import { ModalComponent } from "../components/ModalComponent.tsx";
+import { ModalComponent } from "../components/ModalComponent";
 import { CropForm } from "../components/forms/CropForm";
+import { CropCard } from "../components/cards/CropCard";
 
 export interface Crop {
     cropCode: string;
@@ -14,7 +15,7 @@ export interface Crop {
     fieldDetails: string;
 }
 
-export function CropPage(){
+export function CropPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const crops: Crop[] = [
@@ -50,6 +51,16 @@ export function CropPage(){
     const handleAddButton = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
 
+    const handleUpdate = (cropCode: string) => {
+        console.log("Update Code: "+cropCode);
+
+    };
+
+    const handleDelete = (cropCode: string) => {
+        console.log("Delete crop: "+cropCode);
+
+    };
+
     return (
         <div className="container mx-auto my-5 px-4">
             <h3 className="text-center text-2xl font-semibold mb-5" id="cropsHeader">
@@ -77,21 +88,18 @@ export function CropPage(){
 
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4" id="cropContainer">
                 {crops.map((crop) => (
-                    <div
+                    <CropCard
                         key={crop.cropCode}
-                        className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 hover:shadow-xl"
-                    >
-                        <img
-                            src={crop.image}
-                            alt={crop.commonName}
-                            className="w-full h-32 object-cover rounded-lg mb-4"
-                        />
-                        <h4 className="text-lg font-semibold text-gray-800">{crop.commonName}</h4>
-                        <p className="text-sm text-gray-500">Scientific Name: {crop.scientificName}</p>
-                        <p className="text-sm text-gray-500">Category: {crop.category}</p>
-                        <p className="text-sm text-gray-500">Season: {crop.season}</p>
-                        <p className="text-sm text-gray-500">Field: {crop.fieldDetails}</p>
-                    </div>
+                        cropCode={crop.cropCode}
+                        commonName={crop.commonName}
+                        scientificName={crop.scientificName}
+                        image={crop.image}
+                        category={crop.category}
+                        season={crop.season}
+                        fieldDetails={crop.fieldDetails}
+                        onUpdate={handleUpdate}
+                        onDelete={handleDelete}
+                    />
                 ))}
             </div>
 
