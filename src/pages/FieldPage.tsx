@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import FieldCard from "../components/cards/FieldCard";
 import { FieldForm } from "../components/forms/FieldForm";
 import { ModalComponent } from "../components/ModalComponent";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {FieldModel} from "../model/FieldModel.ts";
+import {deleteField} from "../slices/FieldSlice.ts";
 
 export function FieldPage() {
 
 
     const fieldList = useSelector((state: any) => state.fieldSlice.fields);
+    const dispatch=useDispatch();
     const [selectedField, setSelectedField] = useState(null);
 
     const dataSource = fieldList.map((field: FieldModel, index: number) => ({
@@ -35,8 +37,8 @@ export function FieldPage() {
 
     };
 
-    const handleDeleteField = (fieldCode: string) => {
-        console.log(`Delete field: ${fieldCode}`);
+    const handleDeleteField = (field: FieldModel) => {
+       dispatch(deleteField(field));
 
     };
     return (
@@ -66,7 +68,7 @@ export function FieldPage() {
                         crops={field.crops}
                         staff={field.staff}
                         onUpdate={() => handleUpdateField(field)}
-                        onDelete={() => handleDeleteField(field.fieldCode)}
+                        onDelete={() => handleDeleteField(field)}
                     />
                 ))}
             </div>
