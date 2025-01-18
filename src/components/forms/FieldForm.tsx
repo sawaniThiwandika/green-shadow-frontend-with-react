@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {FieldModel} from "../../model/FieldModel.ts";
 import {useDispatch} from "react-redux";
-import {addField} from "../../slices/FieldSlice.ts";
+import {addField, updateField} from "../../slices/FieldSlice.ts";
 
-export function FieldForm({onSubmit }) {
+export function FieldForm({onSubmit, initialData  }) {
 
     const dispatch=useDispatch();
 
@@ -16,12 +16,32 @@ export function FieldForm({onSubmit }) {
     const [fieldCrops, setFieldCrops] = useState([]);
     const [fieldStaff, setFieldStaff] = useState([]);
 
-
+    useEffect(() => {
+        if (initialData) {
+            setFieldCode(initialData.fieldCode || "");
+            setFieldName(initialData.fieldName || "");
+            setFieldLocation(initialData.fieldLocation || "");
+            setFieldSize(initialData.fieldSize || "");
+            setFieldImage1(initialData.fieldImage1 || "");
+            setFieldImage2(initialData.fieldImage2 || "");
+            setFieldCrops(initialData.fieldCrops || []);
+            setFieldStaff(initialData.fieldStaff || []);
+        }
+    }, [initialData]);
 
     function handleSubmit() {
 
-        const newField=new FieldModel(fieldCode,fieldName,fieldLocation,fieldSize,fieldImage1,fieldImage2,fieldCrops,fieldStaff)
-        dispatch(addField(newField));
+        const field=new FieldModel(fieldCode,fieldName,fieldLocation,fieldSize,fieldImage1,fieldImage2,fieldCrops,fieldStaff)
+
+
+        if (initialData) {
+
+            dispatch(updateField(field ));
+        } else {
+            dispatch(addField(field));
+        }
+
+
     };
 
     const handleFileChange = (e) => {

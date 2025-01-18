@@ -9,6 +9,8 @@ export function FieldPage() {
 
 
     const fieldList = useSelector((state: any) => state.fieldSlice.fields);
+    const [selectedField, setSelectedField] = useState(null);
+
     const dataSource = fieldList.map((field: FieldModel, index: number) => ({
         key: index.toString(),
         fieldCode: field.fieldCode,
@@ -24,9 +26,12 @@ export function FieldPage() {
 
     const handleAddField = () => {
         setIsModalOpen(false);
+        setSelectedField(null);
     };
-    const handleUpdateField = (fieldCode: string) => {
-        console.log(`Update field: ${fieldCode}`);
+    const handleUpdateField = (field: FieldModel) => {
+        console.log("Update : "+field.fieldCode);
+        setSelectedField(field);
+        setIsModalOpen(true);
 
     };
 
@@ -60,8 +65,8 @@ export function FieldPage() {
                         fieldImage1={field.fieldImage1}
                         crops={field.crops}
                         staff={field.staff}
-                        onUpdate={(fieldCode) => handleUpdateField(fieldCode)}
-                        onDelete={(fieldCode) => handleDeleteField(fieldCode)}
+                        onUpdate={() => handleUpdateField(field)}
+                        onDelete={() => handleDeleteField(field.fieldCode)}
                     />
                 ))}
             </div>
@@ -70,7 +75,7 @@ export function FieldPage() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
             >
-                <FieldForm onSubmit={handleAddField} />
+                <FieldForm onSubmit={handleAddField} initialData={selectedField} />
             </ModalComponent>
         </div>
     );
