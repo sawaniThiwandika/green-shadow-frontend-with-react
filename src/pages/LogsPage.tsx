@@ -25,7 +25,8 @@ export function LogsPage(){
     }));
 
     function handleUpdate(record: any) {
-        setSelectedLog(record);
+        const log = logList.find(log => log.logCode === record.logCode);
+        setSelectedLog(log);
         setIsModalOpen(true);
     }
 
