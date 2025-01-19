@@ -4,8 +4,9 @@ import logo from "../assets/logo.png";
 import { ModalComponent } from "../components/ModalComponent";
 import { CropForm } from "../components/forms/CropForm";
 import { CropCard } from "../components/cards/CropCard";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {CropModel} from "../model/CropModel.ts";
+import {deleteCrop} from "../slices/CropSlice.ts";
 
 export interface Crop {
     cropCode: string;
@@ -22,6 +23,7 @@ export function CropPage() {
 
     const cropList=useSelector((state:any) => state.cropSlice.crops);
     const [selectedCrop, setSelectedCrop] = useState(null);
+    const dispatch = useDispatch();
 
     const crops: Crop[] = [
         {
@@ -63,8 +65,11 @@ export function CropPage() {
 
     };
 
-    const handleDelete = (cropCode: string) => {
-        console.log("Delete crop: "+cropCode);
+    const handleDelete = (crop: CropModel) => {
+
+        dispatch((deleteCrop(crop)));
+        alert("Delete crop with code: "+crop.cropCode);
+        console.log("Delete crop: "+crop.cropCode);
 
     };
     const handleFormSubmit = (e) => {
@@ -109,7 +114,7 @@ export function CropPage() {
                         season={crop.season}
                         fieldDetails={crop.fieldDetails}
                         onUpdate={() => handleUpdate(crop)}
-                        onDelete={handleDelete}
+                        onDelete={()=>handleDelete(crop)}
                     />
                 ))}
             </div>
