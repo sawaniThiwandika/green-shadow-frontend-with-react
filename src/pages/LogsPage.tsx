@@ -1,69 +1,77 @@
-import React, {useState} from 'react';
-import {FaSearch} from 'react-icons/fa';
-import {BiPlus} from 'react-icons/bi';
-import {ModalComponent} from "../components/ModalComponent.tsx";
-import {TableComponent} from "../components/TableComponent.tsx";
-import logo from '../assets/logo.png';
+import React, { useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
+import { BiPlus } from 'react-icons/bi';
+import { ModalComponent } from '../components/ModalComponent';
+import { LogFormComponent } from '../components/forms/LogFormComponent';
+import { TableComponent } from '../components/TableComponent';
+import {useSelector} from "react-redux";
+import {LogModel} from "../model/LogModel.ts";
 
-export function LogsPage() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const logs = [
-        {
-            logId: 'L001',
-            date: '2025-01-01',
-            activity: 'Watering',
-            image: logo,
-            responsibleStaff: 'Thiwandika',
-            details: 'Watering field 1.',
-        },
-        {
-            logId: 'L002',
-            date: '2025-01-02',
-            activity: 'Plowing',
-            image: logo,
-            responsibleStaff: 'Sawani',
-            details: 'Plowing field 2.',
-        },
-    ];
+export function LogsPage(){
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [selectedLog,setSelectedLog]=useState(null);
+    const logList=useSelector((state: any) => state.logSlice.logs);
+
+    const dataSource = logList.map((log: LogModel, index: number) => ({
+
+    key: index.toString(),
+        logCode: log.logCode,
+        date: log.logDate,
+        activity: log.logDetails,
+        image:log.observedImage,
+        responsibleStaff: log.relevantStaff.map((staff: any) => staff).join(', '),
+
+
+    }));
+
+    function handleUpdate(record: any) {
+        setSelectedLog(record);
+        setIsModalOpen(true);
+    }
+
+    function handleDelete(record: any) {
+        console.log(record.logInfo);
+    }
 
     const columns = [
-        {
-            title: 'Log ID',
-            dataIndex: 'logId',
-            key: 'logId',
-        },
-        {
-            title: 'Date',
-            dataIndex: 'date',
-            key: 'date',
-        },
-        {
-            title: 'Activity',
-            dataIndex: 'activity',
-            key: 'activity',
-        },
+        { title: 'Log ID', dataIndex: 'logCode', key: 'logCode' },
+        { title: 'Date', dataIndex: 'date', key: 'date' },
+        { title: 'Activity', dataIndex: 'activity', key: 'activity' },
         {
             title: 'Image',
             dataIndex: 'image',
             key: 'image',
-
-            image: <img src={logo} alt="log image" style={{width: '50px', height: '50px'}}/>
-
+            render: (image: string) => {
+                console.log("Image: "+image);
+                if (image) {
+                    return <img src={image} alt="Log" style={{ width: '50px', height: '50px' }} />;
+                }
+                return <span>No Image</span>;
+            },
+        },
+        { title: 'Responsible Staff', dataIndex: 'responsibleStaff', key: 'responsibleStaff' },
+        {
+            title: "Action",
+            key: "update",
+            render: (record:any) => (
+                <button
+                    onClick={()=>handleUpdate(record)}
+                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                    UPDATE
+                </button>
+            ),
         },
         {
-            title: 'Responsible Staff',
-            dataIndex: 'responsibleStaff',
-            key: 'responsibleStaff',
-        },
-        {
-            title: 'Details',
-            dataIndex: 'details',
-            key: 'details',
-        },
-        {
-            title: 'Actions',
-            key: 'actions',
+            title: "Action",
+            key: "delete",
+            render: (record:any) => (
 
+                <button
+                    onClick={()=>handleDelete(record)}
+                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                    DELETE
+                </button>
+            ),
         },
     ];
 
@@ -71,9 +79,8 @@ export function LogsPage() {
         setIsModalOpen(true);
     };
 
-
     return (
-        <div className="container mx-auto p-6">
+        <div className="container mx-auto p-6"    style={{ maxHeight: "calc(100vh - 100px)" }}>
             <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
                 <h1 className="text-3xl font-bold text-gray-800 mt-3">Logs Management</h1>
             </div>
@@ -81,7 +88,7 @@ export function LogsPage() {
             <div className="flex flex-col sm:flex-row items-center justify-between mb-4">
                 <div className="flex-grow flex justify-center mb-4 sm:mb-0">
                     <div className="flex items-center border border-gray-300 rounded-md p-2 w-full max-w-md">
-                        <FaSearch className="text-gray-600 mr-2"/>
+                        <FaSearch className="text-gray-600 mr-2" />
                         <input
                             type="text"
                             placeholder="Search Logs"
@@ -91,83 +98,25 @@ export function LogsPage() {
                 </div>
 
                 <div className="ml-4 sm:ml-10">
-                    <button onClick={handleAddButton}
-                            type="button"
-                            className="flex items-center text-white bg-green-700 rounded-md px-4 py-2 hover:border-green-950 hover:bg-white hover:text-black">
+                    <button
+                        onClick={handleAddButton}
+                        type="button"
+                        className="flex items-center text-white bg-green-700 rounded-md px-4 py-2 hover:border-green-950 hover:bg-white hover:text-black"
+                    >
                         Add New Log
-                        <BiPlus className="ml-3"/>
+                        <BiPlus className="ml-3" />
                     </button>
                 </div>
             </div>
 
-            <TableComponent dataSource={logs} columns={columns}/>
+            <TableComponent dataSource={dataSource} columns={columns} />
 
             <ModalComponent
                 title="Add New Log"
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
             >
-                <form>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-1">Log ID</label>
-                        <input
-                            type="text"
-                            name="logId"
-                            className="w-full border border-gray-300 rounded-md px-2 py-1"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-1">Date</label>
-                        <input
-                            type="date"
-                            name="date"
-                            className="w-full border border-gray-300 rounded-md px-2 py-1"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-1">Activity</label>
-                        <input
-                            type="text"
-                            name="activity"
-                            className="w-full border border-gray-300 rounded-md px-2 py-1"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-1">Responsible Staff</label>
-                        <input
-                            type="text"
-                            name="responsibleStaff"
-                            className="w-full border border-gray-300 rounded-md px-2 py-1"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-1">Details</label>
-                        <textarea
-                            name="details"
-                            className="w-full border border-gray-300 rounded-md px-2 py-1"
-                            rows="3"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-1">Observed Image (optional)</label>
-                        <input
-                            type="file"
-                            name="image"
-                            className="w-full border border-gray-300 rounded-md px-2 py-1"
-                            accept="image/*"
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        className="btn btn-success w-100 bg-green-600 text-white rounded-md py-2">
-                        Add Log
-                    </button>
-                </form>
+                <LogFormComponent onSubmit={() => setIsModalOpen(false) } initialData={selectedLog} />
             </ModalComponent>
         </div>
     );
