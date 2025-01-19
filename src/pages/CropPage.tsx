@@ -4,6 +4,8 @@ import logo from "../assets/logo.png";
 import { ModalComponent } from "../components/ModalComponent";
 import { CropForm } from "../components/forms/CropForm";
 import { CropCard } from "../components/cards/CropCard";
+import {useSelector} from "react-redux";
+import {CropModel} from "../model/CropModel.ts";
 
 export interface Crop {
     cropCode: string;
@@ -17,6 +19,8 @@ export interface Crop {
 
 export function CropPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const cropList=useSelector((state:any) => state.cropSlice.crops);
 
     const crops: Crop[] = [
         {
@@ -60,6 +64,9 @@ export function CropPage() {
         console.log("Delete crop: "+cropCode);
 
     };
+    const handleFormSubmit = (e) => {
+        handleCloseModal();
+    };
 
     return (
         <div className="container mx-auto my-5 px-4">
@@ -87,7 +94,7 @@ export function CropPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4" id="cropContainer">
-                {crops.map((crop) => (
+                {cropList.map((crop:CropModel) => (
                     <CropCard
                         key={crop.cropCode}
                         cropCode={crop.cropCode}
@@ -104,7 +111,7 @@ export function CropPage() {
             </div>
 
             <ModalComponent isOpen={isModalOpen} onClose={handleCloseModal}>
-                <CropForm />
+                <CropForm  onSubmit={handleFormSubmit} />
             </ModalComponent>
         </div>
     );
