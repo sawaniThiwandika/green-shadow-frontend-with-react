@@ -9,7 +9,6 @@ import { Navigation } from "../components/Naviagtions.tsx";
 import {EquipmentPage} from "./EquipmentPage.tsx";
 import {LogsPage} from "./LogsPage.tsx";
 import {StaffPage} from "./StaffPage.tsx";
-import {LoginPage} from "./LoginPage.tsx";
 
 
 export function MainPage() {

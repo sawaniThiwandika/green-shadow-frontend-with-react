@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import {Link, Navigate, useNavigate} from "react-router-dom";
 import {AiOutlineMenuFold, AiOutlineMenuUnfold, AiOutlineBars, AiFillTool, AiOutlineClose} from "react-icons/ai";
 import {GiField, GiHamburger} from "react-icons/gi";
-import {BiLeaf, BiMenu, BiNote} from "react-icons/bi";
+import {BiLeaf, BiLogOut, BiMenu, BiNote} from "react-icons/bi";
 import { AiOutlineCar } from "react-icons/ai";
 import { AiOutlineUser } from "react-icons/ai";
 import logo from '../assets/logo.png';
 import {BsPerson, BsTools} from "react-icons/bs";
+import {HiLogout} from "react-icons/hi";
 
 export function Navigation() {
     const [collapsed] = useState(false);
@@ -112,12 +113,12 @@ export function Navigation() {
                         </li>
                     </ul>
                 </nav>
-                <div className="absolute bottom-4 left-4 w-full px-4">
+                <div className="absolute bottom-4  w-full px-4">
                     <button
                         onClick={handleLogout}
-                        className="flex items-center w-full px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md mt-4"
+                        className="flex items-center px-4 py-2  text-white rounded-full text-sm transition-all duration-200 ease-in-out transform hover:scale-105 shadow-md"
                     >
-                        <AiOutlineClose className="mr-3"/>
+                        <HiLogout className="mr-3"/>
                         {!collapsed && <span>Logout</span>}
                     </button>
                 </div>
