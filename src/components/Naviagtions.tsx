@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import {Link, Navigate, useNavigate} from "react-router-dom";
 import {AiOutlineMenuFold, AiOutlineMenuUnfold, AiOutlineBars, AiFillTool, AiOutlineClose} from "react-icons/ai";
 import {GiField, GiHamburger} from "react-icons/gi";
 import {BiLeaf, BiMenu, BiNote} from "react-icons/bi";
@@ -11,6 +11,11 @@ import {BsPerson, BsTools} from "react-icons/bs";
 export function Navigation() {
     const [collapsed] = useState(false);
     const [isSidebarOpen, setSidebarOpen] = useState(false);
+    const navigate=useNavigate();
+    function handleLogout() {
+        console.log("Logging out...");
+        window.location.href = "/login";
+    }
 
     return (
 
@@ -107,6 +112,15 @@ export function Navigation() {
                         </li>
                     </ul>
                 </nav>
+                <div className="absolute bottom-4 left-4 w-full px-4">
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center w-full px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md mt-4"
+                    >
+                        <AiOutlineClose className="mr-3"/>
+                        {!collapsed && <span>Logout</span>}
+                    </button>
+                </div>
             </aside>
         </div>
     );
