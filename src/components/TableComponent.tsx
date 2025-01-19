@@ -17,20 +17,25 @@ export function TableComponent({ dataSource, columns }) {
                 </thead>
                 <tbody>
                 {dataSource.length > 0 ? (
-                    dataSource.map((data) => (
-                        <tr key={data.key} className="border-t even:bg-gray-50 hover:bg-green-50">
-                            {columns.map((column) => (
-                                <td
-                                    key={column.key}
-                                    className="px-4 py-2 text-sm text-gray-600"
-                                >
-                                    {column.render
-                                        ? column.render(data)
-                                        : data[column.dataIndex]}
-                                </td>
-                            ))}
-                        </tr>
-                    ))
+                    dataSource.map((data) => {
+
+                        const rowKey = data.vehicleId || data.id || data.key;
+
+                        return (
+                            <tr key={rowKey} className="border-t even:bg-gray-50 hover:bg-green-50">
+                                {columns.map((column) => (
+                                    <td
+                                        key={column.key}
+                                        className="px-4 py-2 text-sm text-gray-600"
+                                    >
+                                        {column.render
+                                            ? column.render(data)
+                                            : data[column.dataIndex]}
+                                    </td>
+                                ))}
+                            </tr>
+                        );
+                    })
                 ) : (
                     <tr>
                         <td

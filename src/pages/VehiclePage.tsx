@@ -3,10 +3,15 @@ import { TableComponent } from '../components/TableComponent.tsx';
 import { FaSearch } from 'react-icons/fa';
 import { BiPlus } from "react-icons/bi";
 import { ModalComponent } from "../components/ModalComponent.tsx";
+import {VehicleFormComponent} from "../components/forms/VehicleFormComponent.tsx";
+import {useSelector} from "react-redux";
 
 export function VehiclePage() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedVehicle, setSelectedVehicle] = useState();
+    const vehicleList=useSelector((state:any)=>state.vehicleSlice.vehicles);
+
     function handleAddButton() {
         setIsModalOpen(true);
     }
@@ -29,6 +34,14 @@ export function VehiclePage() {
             assignedField: 'Field 3',
         },
     ];
+
+    function handleUpdate(record) {
+
+    }
+
+    function handleDelete(record) {
+
+    }
 
     const columns = [
         {
@@ -57,23 +70,37 @@ export function VehiclePage() {
             key: 'assignedField',
         },
         {
-            title: 'Update',
-            key: 'update',
+            title: "Action",
+            key: "update",
+            render: (record:any) => (
+                <button
+                    onClick={()=>handleUpdate(record)}
+                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                    UPDATE
+                </button>
+            ),
         },
         {
-            title: 'Delete',
-            key: 'delete',
+            title: "Action",
+            key: "delete",
+            render: (record:any) => (
+
+                <button
+                    onClick={()=>handleDelete(record)}
+                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                    DELETE
+                </button>
+            ),
         },
     ];
 
+
     const closeModal = () => setIsModalOpen(false);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const formObject = Object.fromEntries(formData.entries());
-        console.log("Form Data:", formObject);
+    const handleFormSubmit = (e) => {
+
         closeModal();
+
     };
 
     return (
@@ -104,60 +131,18 @@ export function VehiclePage() {
                 </div>
             </div>
 
-            <TableComponent dataSource={dataSource} columns={columns} />
+            <TableComponent dataSource={vehicleList} columns={columns} />
 
             <ModalComponent
                 title="Add New Vehicle"
                 isOpen={isModalOpen}
                 onClose={closeModal}
             >
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-1">Vehicle ID</label>
-                        <input
-                            type="text"
-                            name="vehicleId"
-                            className="w-full border border-gray-300 rounded-md px-2 py-1"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-1">Type</label>
-                        <input
-                            type="text"
-                            name="type"
-                            className="w-full border border-gray-300 rounded-md px-2 py-1"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-1">Model</label>
-                        <input
-                            type="text"
-                            name="model"
-                            className="w-full border border-gray-300 rounded-md px-2 py-1"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-1">License Plate</label>
-                        <input
-                            type="text"
-                            name="licensePlate"
-                            className="w-full border border-gray-300 rounded-md px-2 py-1"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-1">Assigned Field</label>
-                        <input
-                            type="text"
-                            name="assignedField"
-                            className="w-full border border-gray-300 rounded-md px-2 py-1"
-                            required
-                        />
-                    </div>
-                </form>
+                <VehicleFormComponent
+                    onSubmit={handleFormSubmit}
+                    initialData={selectedVehicle}
+                />
+
             </ModalComponent>
         </div>
     );
