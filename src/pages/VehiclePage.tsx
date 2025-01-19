@@ -36,6 +36,9 @@ export function VehiclePage() {
     ];
 
     function handleUpdate(record) {
+        const selectv = vehicleList.find(vehicle => vehicle.vehicleId === record.vehicleId);
+        setIsModalOpen(true);
+        setSelectedVehicle(selectv);
 
     }
 
