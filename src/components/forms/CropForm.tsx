@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useDispatch } from "react-redux";
-import {addCrop} from "../../slices/CropSlice.ts";
+import {addCrop, updateCrop} from "../../slices/CropSlice.ts";
 import {CropModel} from "../../model/CropModel.ts";
+import {addField, updateField} from "../../slices/FieldSlice.ts";
 
-export function CropForm(): React.ReactElement {
+export function CropForm({onSubmit, initialData }): React.ReactElement {
     const dispatch = useDispatch();
 
     const [cropCode, setCropCode] = useState("");
@@ -14,19 +15,35 @@ export function CropForm(): React.ReactElement {
     const [season, setSeason] = useState("");
     const [fieldDetailsCrop, setFieldDetailsCrop] = useState("");
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    useEffect(() => {
+        if (initialData) {
+            setCropCode(initialData.cropCode || "");
+            setCommonName(initialData.commonName || "");
+            setScientificName(initialData.scientificName || "");
+            setCropImage(initialData.cropImage || null);
+            setCategory(initialData.category || "");
+            setSeason(initialData.season || "");
+            setFieldDetailsCrop(initialData.fieldDetailsCrop || "");
+        }
+    }, [initialData]);
+    function handleSubmit() {
+
 
         if (!cropCode || !commonName || !scientificName || !cropImage || !category || !season || !fieldDetailsCrop) {
             alert("All fields are required.");
             return;
         }
 
-        const newCrop = new CropModel(cropCode,commonName,scientificName,cropImage,category,season,fieldDetailsCrop)
+        const crop = new CropModel(cropCode,commonName,scientificName,cropImage,category,season,fieldDetailsCrop)
 
-        dispatch(addCrop(newCrop));
+        if (initialData) {
 
-        alert("Crop Added Successfully!");
+            dispatch(updateCrop(crop));
+            alert("Crop Updated Successfully!");
+        } else {
+            dispatch(addCrop(crop));
+            alert("Crop Added Successfully!");
+        }
 
         setCropCode("");
         setCommonName("");
@@ -43,7 +60,8 @@ export function CropForm(): React.ReactElement {
     };
 
     return (
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="space-y-4" onSubmit={(e) => {e.preventDefault();handleSubmit();if (onSubmit) onSubmit(e);
+        }} >
             <div>
                 <label htmlFor="cropCode" className="block text-sm font-medium text-gray-700">
                     Crop Code

@@ -21,6 +21,7 @@ export function CropPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const cropList=useSelector((state:any) => state.cropSlice.crops);
+    const [selectedCrop, setSelectedCrop] = useState(null);
 
     const crops: Crop[] = [
         {
@@ -55,8 +56,10 @@ export function CropPage() {
     const handleAddButton = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
 
-    const handleUpdate = (cropCode: string) => {
-        console.log("Update Code: "+cropCode);
+    const handleUpdate = (crop: CropModel) => {
+        console.log("Update Code: "+crop.cropCode);
+        setSelectedCrop(crop);
+        setIsModalOpen(true);
 
     };
 
@@ -66,6 +69,7 @@ export function CropPage() {
     };
     const handleFormSubmit = (e) => {
         handleCloseModal();
+        setSelectedCrop(null);
     };
 
     return (
@@ -104,14 +108,14 @@ export function CropPage() {
                         category={crop.category}
                         season={crop.season}
                         fieldDetails={crop.fieldDetails}
-                        onUpdate={handleUpdate}
+                        onUpdate={() => handleUpdate(crop)}
                         onDelete={handleDelete}
                     />
                 ))}
             </div>
 
             <ModalComponent isOpen={isModalOpen} onClose={handleCloseModal}>
-                <CropForm  onSubmit={handleFormSubmit} />
+                <CropForm  onSubmit={handleFormSubmit} initialData={selectedCrop} />
             </ModalComponent>
         </div>
     );
