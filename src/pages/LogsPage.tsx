@@ -4,13 +4,15 @@ import { BiPlus } from 'react-icons/bi';
 import { ModalComponent } from '../components/ModalComponent';
 import { LogFormComponent } from '../components/forms/LogFormComponent';
 import { TableComponent } from '../components/TableComponent';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {LogModel} from "../model/LogModel.ts";
+import {deleteLog} from "../slices/LogSlice.ts";
 
 export function LogsPage(){
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [selectedLog,setSelectedLog]=useState(null);
     const logList=useSelector((state: any) => state.logSlice.logs);
+    const dispatch=useDispatch();
 
     const dataSource = logList.map((log: LogModel, index: number) => ({
 
@@ -32,6 +34,8 @@ export function LogsPage(){
 
     function handleDelete(record: any) {
         console.log(record.logInfo);
+        const log = logList.find(log => log.logCode === record.logCode);
+        dispatch(deleteLog(log));
     }
 
     const columns = [
