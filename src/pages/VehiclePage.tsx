@@ -4,12 +4,14 @@ import { FaSearch } from 'react-icons/fa';
 import { BiPlus } from "react-icons/bi";
 import { ModalComponent } from "../components/ModalComponent.tsx";
 import {VehicleFormComponent} from "../components/forms/VehicleFormComponent.tsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {deleteVehicle} from "../slices/VehicleSlice.ts";
 
 export function VehiclePage() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState();
+    const dispatch=useDispatch();
     const vehicleList=useSelector((state:any)=>state.vehicleSlice.vehicles);
 
     function handleAddButton() {
@@ -43,6 +45,8 @@ export function VehiclePage() {
     }
 
     function handleDelete(record) {
+        const selectv = vehicleList.find(vehicle => vehicle.vehicleId === record.vehicleId);
+        dispatch(deleteVehicle(selectv));
 
     }
 
