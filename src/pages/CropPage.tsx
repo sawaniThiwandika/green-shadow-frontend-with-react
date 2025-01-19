@@ -25,6 +25,8 @@ export function CropPage() {
     const [selectedCrop, setSelectedCrop] = useState(null);
     const dispatch = useDispatch();
 
+    const [searchQuery, setSearchQuery] = useState("");
+
     const crops: Crop[] = [
         {
             cropCode: "C123",
@@ -54,6 +56,16 @@ export function CropPage() {
             fieldDetails: "Field 3",
         },
     ];
+    const filteredCrops = cropList.filter((crop: CropModel) => {
+        const lowercasedQuery = searchQuery.toLowerCase();
+        return (
+            crop.commonName.toLowerCase().includes(lowercasedQuery) ||
+            crop.scientificName.toLowerCase().includes(lowercasedQuery) ||
+            crop.category.toLowerCase().includes(lowercasedQuery)
+        );
+    });
+
+
 
     const handleAddButton = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
@@ -88,6 +100,7 @@ export function CropPage() {
                     <input
                         type="text"
                         placeholder="Search crops..."
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                     <FaSearch className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500" />
@@ -103,7 +116,7 @@ export function CropPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4" id="cropContainer">
-                {cropList.map((crop:CropModel) => (
+                {filteredCrops.map((crop:CropModel) => (
                     <CropCard
                         key={crop.cropCode}
                         cropCode={crop.cropCode}

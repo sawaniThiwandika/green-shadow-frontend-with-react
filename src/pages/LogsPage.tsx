@@ -12,7 +12,9 @@ export function LogsPage(){
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [selectedLog,setSelectedLog]=useState(null);
     const logList=useSelector((state: any) => state.logSlice.logs);
+    const [searchQuery, setSearchQuery] = useState<string>("");
     const dispatch=useDispatch();
+
 
     const dataSource = logList.map((log: LogModel, index: number) => ({
 
@@ -26,6 +28,10 @@ export function LogsPage(){
 
     }));
 
+    const filteredLogs = dataSource.filter((log: LogModel) => {
+        return log.logCode.toLowerCase().includes(searchQuery.toLowerCase())
+
+    });
     function handleUpdate(record: any) {
         const log = logList.find(log => log.logCode === record.logCode);
         setSelectedLog(log);
@@ -95,7 +101,9 @@ export function LogsPage(){
                     <div className="flex items-center border border-gray-300 rounded-md p-2 w-full max-w-md">
                         <FaSearch className="text-gray-600 mr-2" />
                         <input
+
                             type="text"
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search Logs"
                             className="outline-none px-2 py-1 w-full"
                         />
@@ -114,7 +122,7 @@ export function LogsPage(){
                 </div>
             </div>
 
-            <TableComponent dataSource={dataSource} columns={columns} />
+            <TableComponent dataSource={filteredLogs} columns={columns} />
 
             <ModalComponent
                 title="Add New Log"
