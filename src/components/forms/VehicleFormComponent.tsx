@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { VehicleModel } from "../../model/VehicleModel";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { addVehicle, updateVehicle } from "../../slices/VehicleSlice.ts";
+import {StaffModel} from "../../model/StaffModel.ts";
 
 export function VehicleFormComponent({ onSubmit, initialData }) {
     const dispatch = useDispatch();
+    const staffList = useSelector((state: any) => state.staffSlice.staff);
+    //console.log("staff :",staffList);
+    const [searchTerm, setSearchTerm] = useState("");
+    const filteredStaff = staffList.filter((staff: StaffModel) =>
+        staff.staffId.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     const [vehicleId, setVehicleId] = useState(initialData?.vehicleId || "");
     const [type, setType] = useState(initialData?.type || "");
     const [model, setModel] = useState(initialData?.model || "");
     const [licensePlate, setLicensePlate] = useState(initialData?.licensePlate || "");
-    const [assignedField, setAssignedField] = useState(initialData?.assignedField || "");
+    const [assignedStaff, setAssignedStaff] = useState(initialData?.assignedStaff || []);
 
     useEffect(() => {
         if (initialData) {
@@ -18,7 +25,7 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
             setType(initialData.type || "");
             setModel(initialData.model || "");
             setLicensePlate(initialData.licensePlate || "");
-            setAssignedField(initialData.assignedField || "");
+            setAssignedStaff(initialData.assignedStaff || []);
         }
     }, [initialData]);
 
@@ -28,7 +35,7 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
             type,
             model,
             licensePlate,
-            assignedField
+            assignedStaff
         );
 
         if (vehicleId && vehicleId === initialData?.vehicleId) {
@@ -94,17 +101,44 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
                     required
                 />
             </div>
-            <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Assigned Field</label>
+            <div className="mb-4 relative">
+                <label className="block text-gray-700 mb-1">Assigned Staff</label>
                 <input
                     type="text"
-                    name="assignedField"
-                    value={assignedField}
-                    onChange={(e) => setAssignedField(e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-2 py-1"
-                    required
+                    name="assignedStaff"
+                    value={assignedStaff.join(", ")}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        setAssignedStaff(e.target.value.split(",").map((item) => item.trim()));
+                    }}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter relevant staff separated by commas"
                 />
+                {searchTerm && (
+                    <ul className="absolute mt-1 w-full bg-white border border-gray-300 rounded-md max-h-60 overflow-auto z-10">
+                        {filteredStaff.length > 0 ? (
+                            filteredStaff.map((staff: StaffModel, index) => (
+                                <li
+                                    key={index}
+                                    className="px-2 py-1 cursor-pointer hover:bg-blue-100"
+                                    onClick={() => {
+                                        setAssignedStaff([
+                                            ...assignedStaff,
+                                            staff.staffId,
+                                        ]);
+                                        setSearchTerm("");
+                                    }}
+                                >
+                                    {staff.staffId}
+                                </li>
+                            ))
+                        ) : (
+                            <li className="px-2 py-1 text-gray-500">No staff found</li>
+                        )}
+                    </ul>
+                )}
             </div>
+
             <div className="flex justify-end">
                 <button
                     type="submit"

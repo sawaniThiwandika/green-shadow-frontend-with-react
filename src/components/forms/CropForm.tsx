@@ -13,7 +13,7 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
     const [cropImage, setCropImage] =  useState("");
     const [category, setCategory] = useState("");
     const [season, setSeason] = useState("");
-    const [fieldDetailsCrop, setFieldDetailsCrop] = useState("");
+    const [fieldDetailsCrop, setFieldDetailsCrop] = useState([]);
 
     useEffect(() => {
         if (initialData) {
@@ -23,7 +23,7 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
             setCropImage(initialData.cropImage || null);
             setCategory(initialData.category || "");
             setSeason(initialData.season || "");
-            setFieldDetailsCrop(initialData.fieldDetailsCrop || "");
+            setFieldDetailsCrop(initialData.fieldDetails || []);
         }
     }, [initialData]);
     function handleSubmit() {
@@ -151,8 +151,8 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
                 <input
                     type="text"
                     id="fieldDetailsCrop"
-                    value={fieldDetailsCrop}
-                    onChange={(e) => setFieldDetailsCrop(e.target.value)}
+                    value={fieldDetailsCrop.join(", ")}
+                    onChange={(e) => setFieldDetailsCrop(e.target.value.split(',').map(item => item.trim()))}
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="Enter field details"
                     required

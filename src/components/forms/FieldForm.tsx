@@ -12,9 +12,9 @@ export function FieldForm({onSubmit, initialData  }) {
     const [fieldLocation,setFieldLocation] = useState("");
     const [fieldSize,setFieldSize] = useState("");
     const [fieldImage1,setFieldImage1] = useState("");
-    const [fieldImage2,setFieldImage2] = useState("");
     const [fieldCrops, setFieldCrops] = useState([]);
     const [fieldStaff, setFieldStaff] = useState([]);
+    const [fieldEquipment, setFieldEquipment] = useState([]);
 
     useEffect(() => {
         if (initialData) {
@@ -23,15 +23,15 @@ export function FieldForm({onSubmit, initialData  }) {
             setFieldLocation(initialData.fieldLocation || "");
             setFieldSize(initialData.fieldSize || "");
             setFieldImage1(initialData.fieldImage1 || "");
-            setFieldImage2(initialData.fieldImage2 || "");
-            setFieldCrops(initialData.fieldCrops || []);
-            setFieldStaff(initialData.fieldStaff || []);
+            setFieldCrops(initialData.crops|| []);
+            setFieldStaff(initialData.staff || []);
+            setFieldEquipment(initialData.equipments || []);
         }
     }, [initialData]);
 
     function handleSubmit() {
 
-        const field=new FieldModel(fieldCode,fieldName,fieldLocation,fieldSize,fieldImage1,fieldImage2,fieldCrops,fieldStaff)
+        const field=new FieldModel(fieldCode,fieldName,fieldLocation,fieldSize,fieldImage1,fieldCrops,fieldStaff,fieldEquipment);
 
 
         if (initialData) {
@@ -51,7 +51,10 @@ export function FieldForm({onSubmit, initialData  }) {
 
     return (
 
-        <form onSubmit={(e) => {e.preventDefault();handleSubmit();if (onSubmit) onSubmit(e);
+        <form onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+            if (onSubmit) onSubmit(e);
         }} className="max-w-lg mx-auto p-3 bg-white rounded-lg shadow-md">
 
             <div className="mb-4">
@@ -114,15 +117,6 @@ export function FieldForm({onSubmit, initialData  }) {
                 />
             </div>
 
-            <div className="mb-4">
-                <label htmlFor="fieldImage2" className="block text-sm font-medium text-gray-700">Field Image 2</label>
-                <input
-                    type="file"
-                    name="fieldImage2"
-                    onChange={(e) => setFieldImage2(e.target.files[0])}
-                    className="w-full p-3 mt-1 border border-gray-300 rounded-md"
-                />
-            </div>
 
             <div className="mb-4">
                 <label htmlFor="crops" className="block text-sm font-medium text-gray-700">Crops</label>
@@ -147,7 +141,17 @@ export function FieldForm({onSubmit, initialData  }) {
                     placeholder="Enter staff members separated by commas"
                 />
             </div>
-
+            <div className="mb-4">
+                <label htmlFor="equipment" className="block text-sm font-medium text-gray-700">Equipments</label>
+                <input
+                    type="text"
+                    name="equipment"
+                    value={fieldEquipment.join(', ')}
+                    onChange={(e) => setFieldEquipment(e.target.value.split(',').map(item => item.trim()))}
+                    className="w-full p-3 mt-1 border border-gray-300 rounded-md"
+                    placeholder="Enter staff members separated by commas"
+                />
+            </div>
 
             <div className="flex justify-end mt-6">
                 <button
@@ -158,9 +162,9 @@ export function FieldForm({onSubmit, initialData  }) {
                         setFieldLocation("");
                         setFieldSize("");
                         setFieldImage1("");
-                        setFieldImage2("");
                         setFieldCrops([]);
                         setFieldStaff([]);
+                        setFieldEquipment([]);
 
 
                     }}

@@ -20,7 +20,7 @@ export function EquipmentPage() {
         equipmentName: equipment.equipmentName,
         equipmentType: equipment.equipmentType,
         equipmentStatus: equipment.equipmentStatus,
-        assignedStaff: equipment.equipmentAssignedStaff.join(", "),
+        //assignedStaff: equipment.equipmentAssignedStaff.join(", "),
         assignedField: equipment.equipmentAssignedField,
     }));
 
@@ -42,7 +42,6 @@ export function EquipmentPage() {
         { title: "Equipment Name", dataIndex: "equipmentName", key: "equipmentName" },
         { title: "Type", dataIndex: "equipmentType", key: "equipmentType" },
         { title: "Status", dataIndex: "equipmentStatus", key: "equipmentStatus" },
-        { title: "Assigned Staff", dataIndex: "assignedStaff", key: "assignedStaff" },
         { title: "Assigned Field", dataIndex: "assignedField", key: "assignedField" },
         {
             title: "Action",

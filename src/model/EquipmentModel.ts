@@ -3,7 +3,6 @@ export class EquipmentModel {
     equipmentName: string;
     equipmentType: string;
     equipmentStatus: string;
-    equipmentAssignedStaff: string[];
     equipmentAssignedField: string;
 
     constructor(
@@ -11,14 +10,12 @@ export class EquipmentModel {
         name: string,
         type: string,
         status: string,
-        assignedStaff: string[],
         assignedField: string
     ) {
         this.equipmentId = id;
         this.equipmentName = name;
         this.equipmentType = type;
         this.equipmentStatus = status;
-        this.equipmentAssignedStaff = assignedStaff;
         this.equipmentAssignedField = assignedField;
     }
 

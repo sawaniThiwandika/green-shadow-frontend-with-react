@@ -10,8 +10,8 @@ export function LogFormComponent({onSubmit, initialData}) {
     const [logDate, setLogDate] = useState("");
     const [logDetails, setLogDetails] = useState("");
     const [observedImage, setObservedImage] = useState("");
-    const [relevantFields, setRelevantFields] = useState([]);
-    const [relevantCrops, setRelevantCrops] = useState([]);
+    const [relevantField, setRelevantField] = useState("");
+    const [relevantCrop, setRelevantCrop] = useState("");
     const [relevantStaff, setRelevantStaff] = useState([]);
 
     useEffect(() => {
@@ -20,8 +20,8 @@ export function LogFormComponent({onSubmit, initialData}) {
             setLogDate(initialData.logDate || "");
             setLogDetails(initialData.logDetails || "");
             setObservedImage(initialData.observedImage || "");
-            setRelevantFields(initialData.relevantFields || []);
-            setRelevantCrops(initialData.relevantCrops || []);
+            setRelevantField(initialData.relevantFields || "");
+            setRelevantCrop(initialData.relevantCrops || "");
             setRelevantStaff(initialData.relevantStaff || []);
         }
     }, [initialData]);
@@ -31,8 +31,8 @@ export function LogFormComponent({onSubmit, initialData}) {
             logCode,
             logDate,
             logDetails,
-            relevantFields,
-            relevantCrops,
+            relevantField,
+            relevantCrop,
             relevantStaff,
             observedImage
         );
@@ -106,9 +106,9 @@ export function LogFormComponent({onSubmit, initialData}) {
                 <label className="block text-sm font-medium text-gray-700">Relevant Fields</label>
                 <input
                     type="text"
-                    value={relevantFields.join(", ")}
+                    value={relevantField}
 
-                    onChange={(e) => setRelevantFields(e.target.value.split(',').map(item => item.trim()))}
+                    onChange={(e) => setRelevantField(e.target.value)}
 
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="Enter relevant fields separated by commas"
@@ -119,9 +119,9 @@ export function LogFormComponent({onSubmit, initialData}) {
                 <label className="block text-sm font-medium text-gray-700">Relevant Crops</label>
                 <input
                     type="text"
-                    value={relevantCrops.join(", ")}
+                    value={relevantCrop}
                     onChange={(e) =>
-                        setRelevantCrops(e.target.value.split(",").map((item) => item.trim()))
+                        setRelevantCrop(e.target.value)
                     }
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="Enter relevant crops separated by commas"
@@ -147,8 +147,8 @@ export function LogFormComponent({onSubmit, initialData}) {
                         setLogDate("");
                         setLogDetails("");
                         setObservedImage("");
-                        setRelevantFields([]);
-                        setRelevantCrops([]);
+                        setRelevantField("");
+                        setRelevantCrop("");
                         setRelevantStaff([]);
                     }}
                     className="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"

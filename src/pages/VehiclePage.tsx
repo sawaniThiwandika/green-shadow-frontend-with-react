@@ -72,9 +72,9 @@ export function VehiclePage() {
             key: 'licensePlate',
         },
         {
-            title: 'Assigned Field',
-            dataIndex: 'assignedField',
-            key: 'assignedField',
+            title: 'Assigned Staff',
+            dataIndex: 'assignedStaff',
+            key: 'assignedStaff',
         },
         {
             title: "Action",

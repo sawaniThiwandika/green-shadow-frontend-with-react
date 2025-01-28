@@ -5,7 +5,7 @@ export class CropModel {
     image: string;
     category: string;
     season: string;
-    fieldDetails: string;
+    fieldDetails: string [];
 
     constructor(
         cropCode: string,
@@ -14,7 +14,7 @@ export class CropModel {
         image: string,
         category: string,
         season: string,
-        fieldDetails: string
+        fieldDetails: string []
     ) {
         this.cropCode = cropCode;
         this.commonName = commonName;

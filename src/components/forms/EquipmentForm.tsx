@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { EquipmentModel } from "../../model/EquipmentModel";
 import { addEquipment, updateEquipment } from "../../slices/EquipmentSlice";
 
 export function EquipmentForm({ onSubmit, initialData }) {
     const dispatch = useDispatch();
-
+    const fieldList = useSelector((state: any) => state.fieldSlice.fields);
     const [equipmentId, setEquipmentId] = useState("");
     const [equipmentName, setEquipmentName] = useState("");
     const [equipmentType, setEquipmentType] = useState("");
     const [equipmentStatus, setEquipmentStatus] = useState("");
-    const [equipmentAssignedStaff, setEquipmentAssignedStaff] = useState([]);
     const [equipmentAssignedField, setEquipmentAssignedField] = useState("");
 
     useEffect(() => {
@@ -19,7 +18,6 @@ export function EquipmentForm({ onSubmit, initialData }) {
             setEquipmentName(initialData.equipmentName || "");
             setEquipmentType(initialData.equipmentType || "");
             setEquipmentStatus(initialData.equipmentStatus || "");
-            setEquipmentAssignedStaff(initialData.equipmentAssignedStaff || []);
             setEquipmentAssignedField(initialData.equipmentAssignedField || "");
         }
     }, [initialData]);
@@ -30,7 +28,6 @@ export function EquipmentForm({ onSubmit, initialData }) {
             equipmentName,
             equipmentType,
             equipmentStatus,
-            equipmentAssignedStaff,
             equipmentAssignedField
         );
 
@@ -86,39 +83,32 @@ export function EquipmentForm({ onSubmit, initialData }) {
 
             <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700">Equipment Status</label>
-                <input
-                    type="text"
+                <select
                     value={equipmentStatus}
                     onChange={(e) => setEquipmentStatus(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="Enter equipment status"
-                />
-            </div>
-
-            <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Assigned Staff</label>
-                <input
-                    type="text"
-                    value={equipmentAssignedStaff.join(", ")}
-                    onChange={(e) =>
-                        setEquipmentAssignedStaff(e.target.value.split(",").map((item) => item.trim()))
-                    }
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="Enter assigned staff separated by commas"
-                />
+                >
+                    <option value="">Select Status</option>
+                    <option value="Available">Available</option>
+                    <option value="Not Available">Not Available</option>
+                </select>
             </div>
 
             <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700">Assigned Field</label>
-                <input
-                    type="text"
+                <select
                     value={equipmentAssignedField}
-                    onChange={(e) =>
-                        setEquipmentAssignedField(e.target.value.split(",").map((item) => item.trim()))
-                    }
+                    onChange={(e) => setEquipmentAssignedField(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="Enter assigned field"
-                />
+                    aria-label="Assigned Field"
+                >
+                    <option value="">Select a field</option>
+                    {fieldList.map((field: any, index: number) => (
+                        <option key={index} value={field.fieldCode}>
+                            {field.fieldName}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             <div className="flex justify-end mt-6">
@@ -129,7 +119,6 @@ export function EquipmentForm({ onSubmit, initialData }) {
                         setEquipmentName("");
                         setEquipmentType("");
                         setEquipmentStatus("");
-                        setEquipmentAssignedStaff([]);
                         setEquipmentAssignedField("");
                     }}
                     className="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"

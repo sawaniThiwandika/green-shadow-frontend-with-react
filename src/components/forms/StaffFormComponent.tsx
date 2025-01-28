@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from "react";
 import { StaffModel } from "../../model/StaffModel";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addStaff, updateStaff} from "../../slices/StaffSlice.ts";
 
 export function StaffFormComponent({ onSubmit, initialData }) {
     const dispatch = useDispatch();
+
+    const fieldList = useSelector((state: any) => state.fieldSlice.fields);
+    const vehicleList=useSelector((state:any)=>state.vehicleSlice.vehicles);
 
     const [staffId, setStaffId] = useState(initialData?.staffId || "");
     const [firstName, setFirstName] = useState(initialData?.firstName || "");
@@ -14,6 +17,8 @@ export function StaffFormComponent({ onSubmit, initialData }) {
     const [contact, setContact] = useState(initialData?.contact || "");
     const [designation, setDesignation] = useState(initialData?.designation || "");
     const [gender, setGender] = useState(initialData?.gender || "");
+    const [assignedField, setAssignedField] = useState(initialData?.field || "");
+    const [assignedVehicle,setAssignedVehicle] = useState(initialData?.vehicle || "");
 
     useEffect(() => {
         if (initialData) {
@@ -25,6 +30,8 @@ export function StaffFormComponent({ onSubmit, initialData }) {
             setContact(initialData.contact || "");
             setDesignation(initialData.designation || "");
             setGender(initialData.gender || "");
+            setAssignedField(initialData.field || "");
+            setAssignedVehicle(initialData.vehicle || "");
         }
     }, [initialData]);
 
@@ -38,7 +45,9 @@ export function StaffFormComponent({ onSubmit, initialData }) {
             designation,
             gender,
             contact,
-            email
+            email,
+            assignedField,
+            assignedVehicle
         );
 
         if (staffId && staffId === initialData?.staffId) {
@@ -56,7 +65,10 @@ export function StaffFormComponent({ onSubmit, initialData }) {
     }
 
     return (
-        <form onSubmit={(e) => {e.preventDefault();handleSubmit();if (onSubmit) onSubmit(e);
+        <form onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+            if (onSubmit) onSubmit(e);
         }}>
             <div className="mb-4">
                 <label className="block text-gray-700 mb-1">Staff ID</label>
@@ -150,6 +162,41 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                     required
                 />
             </div>
+            <div className="mb-4">
+                <label className="block text-gray-700 mb-1">Assigned Field</label>
+                <select
+                    name="assignedField"
+                    value={assignedField}
+                    onChange={(e) => setAssignedField(e.target.value)}
+                    className="w-full border border-gray-300 rounded-md px-2 py-1"
+                    required
+                >
+                    <option value="">Select Field</option>
+                    {fieldList.map((field) => (
+                        <option key={field.fieldCode} value={field.fieldCode}>
+                            {field.fieldName}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="mb-4">
+                <label className="block text-gray-700 mb-1">Assigned Vehicle</label>
+                <select
+                    name="assignedVehicle"
+                    value={assignedVehicle}
+                    onChange={(e) => setAssignedVehicle(e.target.value)}
+                    className="w-full border border-gray-300 rounded-md px-2 py-1"
+                    required
+                >
+                    <option value="">Select Vehicle</option>
+                    {vehicleList.map((vehicle) => (
+                        <option key={vehicle.vehicleId} value={vehicle.vehicleId}>
+                            {vehicle.vehicleId}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
             <div className="flex justify-end">
                 <button
                     type="submit"
@@ -158,6 +205,8 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                     Submit
                 </button>
             </div>
+
+
         </form>
     );
 }

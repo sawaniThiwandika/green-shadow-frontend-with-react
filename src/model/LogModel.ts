@@ -4,16 +4,16 @@ export class LogModel {
     logDate: string;
     logDetails: string;
     observedImage: string;
-    relevantFields: string[];
-    relevantCrops: string[];
+    relevantFields: string;
+    relevantCrops: string;
     relevantStaff: string[];
 
     constructor(
         logCode: string,
         logDate: string,
         logDetails: string,
-        relevantFields: string[],
-        relevantCrops: string[],
+        relevantFields: string,
+        relevantCrops: string,
         relevantStaff: string[],
         observedImage: string
     ) {

@@ -23,6 +23,7 @@ export function FieldPage() {
             fieldSize: field.fieldSize,
             crops: field.crops,
             staff: field.staff,
+            equipments: field.equipment,
         }))
         .filter((field:FieldModel) =>
             field.fieldName.toLowerCase().includes(searchQuery.toLowerCase()) ||
