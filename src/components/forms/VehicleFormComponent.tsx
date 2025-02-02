@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { VehicleModel } from "../../model/VehicleModel";
 import {useDispatch, useSelector} from "react-redux";
-import { addVehicle, updateVehicle } from "../../slices/VehicleSlice.ts";
+import { saveVehicle, updateVehicle} from "../../slices/VehicleSlice.ts";
 import {StaffModel} from "../../model/StaffModel.ts";
 
 export function VehicleFormComponent({ onSubmit, initialData }) {
@@ -35,14 +35,14 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
             type,
             model,
             licensePlate,
-            assignedStaff
+            []
         );
 
         if (vehicleId && vehicleId === initialData?.vehicleId) {
             dispatch(updateVehicle(vehicleData));
             console.log("Update vehicle: ", vehicleData);
         } else {
-            dispatch(addVehicle(vehicleData));
+            dispatch(saveVehicle(vehicleData));
             console.log("Add new vehicle: ", vehicleData);
         }
 
