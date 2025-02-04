@@ -12,10 +12,10 @@ import {HiLogout} from "react-icons/hi";
 export function Navigation() {
     const [collapsed] = useState(false);
     const [isSidebarOpen, setSidebarOpen] = useState(false);
-    const navigate=useNavigate();
+
     function handleLogout() {
         console.log("Logging out...");
-        window.location.href = "/login";
+        window.location.href = "/";
     }
 
     return (
@@ -56,56 +56,56 @@ export function Navigation() {
                 <nav className="mt-4">
                     <ul className="space-y-4">
                         <li>
-                            <Link to="/mainPage/dashboard"
+                            <Link to="/app/dashboard"
                                   className="flex items-center px-4 py-2 hover:bg-green-100 hover:text-black rounded-md">
                                 <AiOutlineBars className="mr-3 text-xl"/>
                                 {!collapsed && <span>Dashboard</span>}
                             </Link>
                         </li>
                         <li>
-                            <Link to="/mainPage/cropPage"
+                            <Link to="/app/cropPage"
                                   className="flex items-center px-4 py-2 hover:bg-green-100 hover:text-black rounded-md">
                                 <BiLeaf className="mr-3 text-xl"/>
                                 {!collapsed && <span>Crops</span>}
                             </Link>
                         </li>
                         <li>
-                            <Link to="/mainPage/fieldPage"
+                            <Link to="/app/fieldPage"
                                   className="flex items-center px-4 py-2 hover:bg-green-100 hover:text-black rounded-md">
                                 <GiField className="mr-3 text-xl"/>
                                 {!collapsed && <span>Fields</span>}
                             </Link>
                         </li>
                         <li>
-                            <Link to="/mainPage/staffPage"
+                            <Link to="/app/staffPage"
                                   className="flex items-center px-4 py-2 hover:bg-green-100 hover:text-black rounded-md">
                                 <BsPerson className="mr-3 text-xl"/>
                                 {!collapsed && <span>Staff</span>}
                             </Link>
                         </li>
                         <li>
-                            <Link to="/mainPage/logsPage"
+                            <Link to="/app/logsPage"
                                   className="flex items-center px-4 py-2 hover:bg-green-100 hover:text-black rounded-md">
                                 <BiNote className="mr-3 text-xl"/>
                                 {!collapsed && <span>Logs</span>}
                             </Link>
                         </li>
                         <li>
-                            <Link to="/mainPage/equipmentPage"
+                            <Link to="/app/equipmentPage"
                                   className="flex items-center px-4 py-2 hover:bg-green-100 hover:text-black rounded-md">
                                 <AiFillTool className="mr-3 text-xl"/>
                                 {!collapsed && <span>Equipment</span>}
                             </Link>
                         </li>
                         <li>
-                            <Link to="/mainPage/vehiclePage"
+                            <Link to="/app/vehiclePage"
                                   className="flex items-center px-4 py-2 hover:bg-green-100 hover:text-black rounded-md">
                                 <AiOutlineCar className="mr-3 text-xl"/>
                                 {!collapsed && <span>Vehicles</span>}
                             </Link>
                         </li>
                         <li>
-                            <Link to="/mainPage/userPage"
+                            <Link to="/app/userPage"
                                   className="flex items-center px-4 py-2 hover:bg-green-100 hover:text-black rounded-md">
                                 <AiOutlineUser className="mr-3 text-xl"/>
                                 {!collapsed && <span>Users</span>}
