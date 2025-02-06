@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {FieldModel} from "../../model/FieldModel.ts";
 import {useDispatch} from "react-redux";
 import {addField, updateField} from "../../slices/FieldSlice.ts";
+import {LabelComponent} from "../LabelComponent.tsx";
+import {Button, Input} from "antd";
 
 export function FieldForm({onSubmit, initialData  }) {
 
@@ -58,8 +60,9 @@ export function FieldForm({onSubmit, initialData  }) {
         }} className="max-w-lg mx-auto p-3 bg-white rounded-lg shadow-md">
 
             <div className="mb-4">
-                <label htmlFor="fieldCode" className="block text-sm font-medium text-gray-700">Field Code</label>
-                <input
+                <LabelComponent htmlFor={"fieldCode"} text={"Field Code"}/>
+               {/* <label htmlFor="fieldCode" className="block text-sm font-medium text-gray-700">Field Code</label>*/}
+                <Input
                     type="text"
                     name="fieldCode"
                     value={fieldCode}
@@ -70,8 +73,9 @@ export function FieldForm({onSubmit, initialData  }) {
             </div>
 
             <div className="mb-4">
-                <label htmlFor="fieldName" className="block text-sm font-medium text-gray-700">Field Name</label>
-                <input
+               {/* <label htmlFor="fieldName" className="block text-sm font-medium text-gray-700">Field Name</label>*/}
+                <LabelComponent htmlFor="fieldName" text={"Field Name"}/>
+                <Input
                     type="text"
                     name="fieldName"
                     value={fieldName}
@@ -82,9 +86,10 @@ export function FieldForm({onSubmit, initialData  }) {
             </div>
 
             <div className="mb-4">
-                <label htmlFor="fieldLocation" className="block text-sm font-medium text-gray-700">Field
-                    Location</label>
-                <input
+                {/*<label htmlFor="fieldLocation" className="block text-sm font-medium text-gray-700">Field
+                    Location</label>*/}
+                <LabelComponent htmlFor="fieldLocation" text={"Field Location"}/>
+                <Input
                     type="text"
                     name="fieldLocation"
                     value={fieldLocation}
@@ -95,9 +100,10 @@ export function FieldForm({onSubmit, initialData  }) {
             </div>
 
             <div className="mb-4">
-                <label htmlFor="fieldSize" className="block text-sm font-medium text-gray-700">Field Size (in
-                    Acres)</label>
-                <input
+                {/*<label htmlFor="fieldSize" className="block text-sm font-medium text-gray-700">Field Size (in
+                    Acres)</label>*/}
+                <LabelComponent htmlFor="fieldSize" text={"Field Size (In Acres)"} />
+                <Input
                     type="number"
                     name="fieldSize"
                     value={fieldSize}
@@ -108,8 +114,9 @@ export function FieldForm({onSubmit, initialData  }) {
             </div>
 
             <div className="mb-4">
-                <label htmlFor="fieldImage1" className="block text-sm font-medium text-gray-700">Field Image 1</label>
-                <input
+                {/*<label htmlFor="fieldImage1" className="block text-sm font-medium text-gray-700">Field Image 1</label>*/}
+                <LabelComponent htmlFor="fieldImage1" text={"Field Image 1"}/>
+                <Input
                     type="file"
                     name="fieldImage1"
                     onChange={handleFileChange}
@@ -119,8 +126,9 @@ export function FieldForm({onSubmit, initialData  }) {
 
 
             <div className="mb-4">
-                <label htmlFor="crops" className="block text-sm font-medium text-gray-700">Crops</label>
-                <input
+                {/*<label htmlFor="crops" className="block text-sm font-medium text-gray-700">Crops</label>*/}
+                <LabelComponent htmlFor="crops" text={"Crops"}/>
+                <Input
                     type="text"
                     name="crops"
                     value={fieldCrops.join(', ')}
@@ -131,8 +139,9 @@ export function FieldForm({onSubmit, initialData  }) {
             </div>
 
             <div className="mb-4">
-                <label htmlFor="staff" className="block text-sm font-medium text-gray-700">Staff</label>
-                <input
+               {/* <label htmlFor="staff" className="block text-sm font-medium text-gray-700">Staff</label>*/}
+                <LabelComponent htmlFor="staff" text={"Staff"}/>
+                <Input
                     type="text"
                     name="staff"
                     value={fieldStaff.join(', ')}
@@ -142,8 +151,9 @@ export function FieldForm({onSubmit, initialData  }) {
                 />
             </div>
             <div className="mb-4">
-                <label htmlFor="equipment" className="block text-sm font-medium text-gray-700">Equipments</label>
-                <input
+               {/* <label htmlFor="equipment" className="block text-sm font-medium text-gray-700">Equipments</label>*/}
+                <LabelComponent htmlFor="equipment" text={"Equipments"}/>
+                <Input
                     type="text"
                     name="equipment"
                     value={fieldEquipment.join(', ')}
@@ -154,8 +164,8 @@ export function FieldForm({onSubmit, initialData  }) {
             </div>
 
             <div className="flex justify-end mt-6">
-                <button
-                    type="button"
+                <Button
+                    type="primary"
                     onClick={() => {
                         setFieldCode("");
                         setFieldName("");
@@ -171,13 +181,13 @@ export function FieldForm({onSubmit, initialData  }) {
                     className="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
                 >
                     Reset
-                </button>
-                <button
-                    type="submit"
+                </Button>
+                <Button
+                    type="primary"
                     className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                 >
                     Save
-                </button>
+                </Button>
             </div>
         </form>
 

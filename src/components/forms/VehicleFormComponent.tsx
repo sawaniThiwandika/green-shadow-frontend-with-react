@@ -3,11 +3,14 @@ import { VehicleModel } from "../../model/VehicleModel";
 import {useDispatch, useSelector} from "react-redux";
 import { saveVehicle, updateVehicle} from "../../slices/VehicleSlice.ts";
 import {StaffModel} from "../../model/StaffModel.ts";
+import {Button, Input} from "antd";
+import {LabelComponent} from "../LabelComponent.tsx";
 
 export function VehicleFormComponent({ onSubmit, initialData }) {
     const dispatch = useDispatch();
     const staffList = useSelector((state: any) => state.staffSlice.staff);
-    //console.log("staff :",staffList);
+    //
+    // console.log("staff :",staffList);
     const [searchTerm, setSearchTerm] = useState("");
     const filteredStaff = staffList.filter((staff: StaffModel) =>
         staff.staffId.toLowerCase().includes(searchTerm.toLowerCase())
@@ -58,8 +61,9 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
             className="p-4 bg-white rounded-lg shadow-md space-y-4"
         >
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Vehicle ID</label>
-                <input
+                {/*<label className="block text-gray-700 mb-1">Vehicle ID</label>*/}
+                <LabelComponent htmlFor={"vehicleId"} text={"Vehicle ID"}/>
+                <Input
                     type="text"
                     name="vehicleId"
                     value={vehicleId}
@@ -69,8 +73,9 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Type</label>
-                <input
+                {/*<label className="block text-gray-700 mb-1">Type</label>*/}
+                <LabelComponent htmlFor={"type"} text={"Type"}/>
+                <Input
                     type="text"
                     name="type"
                     value={type}
@@ -80,8 +85,9 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Model</label>
-                <input
+                {/*<label className="block text-gray-700 mb-1">Model</label>*/}
+                <LabelComponent htmlFor={"model"} text={"Model"}/>
+                <Input
                     type="text"
                     name="model"
                     value={model}
@@ -91,8 +97,9 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">License Plate</label>
-                <input
+                {/*<label className="block text-gray-700 mb-1">License Plate</label>*/}
+                <LabelComponent htmlFor={"licensePlate"} text={"License Plate"}/>
+                <Input
                     type="text"
                     name="licensePlate"
                     value={licensePlate}
@@ -102,8 +109,9 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4 relative">
-                <label className="block text-gray-700 mb-1">Assigned Staff</label>
-                <input
+                {/*<label className="block text-gray-700 mb-1">Assigned Staff</label>*/}
+                <LabelComponent htmlFor={"assignedStaff"} text={"Assigned Staff"}/>
+                <Input
                     type="text"
                     name="assignedStaff"
                     value={assignedStaff.join(", ")}
@@ -140,12 +148,12 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
             </div>
 
             <div className="flex justify-end">
-                <button
-                    type="submit"
+                <Button
+                    type="primary"
                     className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                 >
                     Submit
-                </button>
+                </Button>
             </div>
         </form>
     );

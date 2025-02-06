@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import { StaffModel } from "../../model/StaffModel";
 import {useDispatch, useSelector} from "react-redux";
 import {addStaff, updateStaff} from "../../slices/StaffSlice.ts";
+import {Button, Input} from "antd";
+import {LabelComponent} from "../LabelComponent.tsx";
 
 export function StaffFormComponent({ onSubmit, initialData }) {
     const dispatch = useDispatch();
@@ -71,8 +73,9 @@ export function StaffFormComponent({ onSubmit, initialData }) {
             if (onSubmit) onSubmit(e);
         }}>
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Staff ID</label>
-                <input
+               {/* <label className="block text-gray-700 mb-1">Staff ID</label>*/}
+                <LabelComponent htmlFor={"staffId"} text={"Staff ID"}/>
+                <Input
                     type="text"
                     name="staffId"
                     value={staffId}
@@ -82,8 +85,9 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">First Name</label>
-                <input
+                <LabelComponent htmlFor={"fName"} text={"FirstName"}/>
+               {/* <label className="block text-gray-700 mb-1">First Name</label>*/}
+                <Input
                     type="text"
                     name="fname"
                     value={firstName}
@@ -93,8 +97,9 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Last Name</label>
-                <input
+                {/*<label className="block text-gray-700 mb-1">Last Name</label>*/}
+                <LabelComponent htmlFor={"lName"} text={"Last Name"}/>
+                <Input
                     type="text"
                     name="lname"
                     value={lastName}
@@ -104,8 +109,9 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Address</label>
-                <input
+             {/*   <label className="block text-gray-700 mb-1">Address</label>*/}
+                <LabelComponent htmlFor={"address"} text={"Address"}/>
+                <Input
                     type="text"
                     name="address"
                     value={address}
@@ -115,8 +121,9 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Designation</label>
-                <input
+                {/*<label className="block text-gray-700 mb-1">Designation</label>*/}
+                <LabelComponent htmlFor={"designation"} text={"Designation"}/>
+                <Input
                     type="text"
                     name="designation"
                     value={designation}
@@ -126,7 +133,8 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Gender</label>
+            {/*    <label className="block text-gray-700 mb-1">Gender</label>*/}
+                <LabelComponent htmlFor={"gender"} text={"Gender"}/>
                 <select
                     name="gender"
                     value={gender}
@@ -141,8 +149,9 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 </select>
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Contact No.</label>
-                <input
+               {/* <label className="block text-gray-700 mb-1">Contact No.</label>*/}
+                <LabelComponent htmlFor={"contactNo"} text={"Contact No"}/>
+                <Input
                     type="text"
                     name="contactNo"
                     value={contact}
@@ -152,8 +161,9 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Email</label>
-                <input
+             {/*   <label className="block text-gray-700 mb-1">Email</label>*/}
+                <LabelComponent htmlFor={"email"} text={"Email"}/>
+                <Input
                     type="email"
                     name="email"
                     value={email}
@@ -163,7 +173,8 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Assigned Field</label>
+                {/*<label className="block text-gray-700 mb-1">Assigned Field</label>*/}
+                <LabelComponent htmlFor={"assignedField"} text={"Assigned Field"}/>
                 <select
                     name="assignedField"
                     value={assignedField}
@@ -180,7 +191,8 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 </select>
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Assigned Vehicle</label>
+                {/*<label className="block text-gray-700 mb-1">Assigned Vehicle</label>*/}
+                <LabelComponent htmlFor={"assignedVehicle"} text={"Assigned Vehicle"}/>
                 <select
                     name="assignedVehicle"
                     value={assignedVehicle}
@@ -198,12 +210,12 @@ export function StaffFormComponent({ onSubmit, initialData }) {
             </div>
 
             <div className="flex justify-end">
-                <button
-                    type="submit"
+                <Button
+                    type="primary"
                     className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                 >
                     Submit
-                </button>
+                </Button>
             </div>
 
 
