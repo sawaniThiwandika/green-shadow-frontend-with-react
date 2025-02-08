@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { VehicleModel } from "../../model/VehicleModel";
 import {useDispatch, useSelector} from "react-redux";
-import { saveVehicle, updateVehicle} from "../../slices/VehicleSlice.ts";
+import {saveVehicle, updateExitingVehicle, updateVehicle} from "../../slices/VehicleSlice.ts";
 import {StaffModel} from "../../model/StaffModel.ts";
 import {Button, Input} from "antd";
 import {LabelComponent} from "../LabelComponent.tsx";
+import {updateEquipment} from "../../slices/EquipmentSlice.ts";
 
 export function VehicleFormComponent({ onSubmit, initialData }) {
     const dispatch = useDispatch();
@@ -42,7 +43,7 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
         );
 
         if (vehicleId && vehicleId === initialData?.vehicleId) {
-            dispatch(updateVehicle(vehicleData));
+            dispatch(updateExitingVehicle(vehicleData));
             console.log("Update vehicle: ", vehicleData);
         } else {
             dispatch(saveVehicle(vehicleData));
@@ -151,6 +152,7 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
                 <Button
                     type="primary"
                     className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                    onClick={handleSubmit}
                 >
                     Submit
                 </Button>
