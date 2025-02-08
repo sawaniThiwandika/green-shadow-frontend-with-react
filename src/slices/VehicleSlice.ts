@@ -13,9 +13,7 @@ export const saveVehicle=createAsyncThunk('vehicleSlice/saveVehicle',
     async (vehicle:VehicleModel)=>{
         try{
             const response=await api.post('/add',vehicle);
-
             return response.data;
-
 
         }
         catch(error){
@@ -34,6 +32,19 @@ export const updateExitingVehicle=createAsyncThunk('vehicleSlice/updateExitingVe
     catch (error) {
         console.log(error);
     }
+
+    });
+
+export const deleteExitingVehicle=createAsyncThunk('customerSlice/ deleteExitingVehicle',
+    async (vehicleId:string)=>{
+        try{
+            const response=await api.delete(`/delete/${vehicleId}`);
+            return response.data;
+        }
+        catch(error){
+            console.log(error);
+
+        }
 
     });
 
@@ -97,6 +108,15 @@ const vehicleSlice = createSlice({
                 console.log("fulfilled");
             })
             .addCase(updateExitingVehicle.rejected, (state, action) => {
+                console.log("Rejected");
+            })
+            .addCase(deleteExitingVehicle.pending,(state, action) => {
+                console.log("Pending");
+            })
+            .addCase(deleteExitingVehicle.fulfilled, (state, action) => {
+                console.log("fulfilled");
+            })
+            .addCase(deleteExitingVehicle.rejected, (state, action) => {
                 console.log("Rejected");
             })
 

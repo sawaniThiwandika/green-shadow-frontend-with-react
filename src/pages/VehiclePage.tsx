@@ -5,7 +5,7 @@ import { BiPlus } from "react-icons/bi";
 import { ModalComponent } from "../components/ModalComponent.tsx";
 import {VehicleFormComponent} from "../components/forms/VehicleFormComponent.tsx";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteVehicle, getVehicles} from "../slices/VehicleSlice.ts";
+import {deleteExitingVehicle, deleteVehicle, getVehicles} from "../slices/VehicleSlice.ts";
 import {SearchBarComponent} from "../components/SearchBarComponent.tsx";
 import {EquipmentModel} from "../model/EquipmentModel.ts";
 import {VehicleModel} from "../model/VehicleModel.ts";
@@ -73,7 +73,7 @@ export function VehiclePage() {
 
     function handleDelete(record) {
         const selectv = vehicleList.find(vehicle => vehicle.vehicleId === record.vehicleId);
-        dispatch(deleteVehicle(selectv));
+        dispatch(deleteExitingVehicle(selectv.vehicleId));
 
     }
 
