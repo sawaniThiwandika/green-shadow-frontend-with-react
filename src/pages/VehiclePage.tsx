@@ -1,41 +1,68 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { TableComponent } from '../components/TableComponent.tsx';
 import { FaSearch } from 'react-icons/fa';
 import { BiPlus } from "react-icons/bi";
 import { ModalComponent } from "../components/ModalComponent.tsx";
 import {VehicleFormComponent} from "../components/forms/VehicleFormComponent.tsx";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteVehicle} from "../slices/VehicleSlice.ts";
+import {deleteVehicle, getVehicles} from "../slices/VehicleSlice.ts";
+import {SearchBarComponent} from "../components/SearchBarComponent.tsx";
+import {EquipmentModel} from "../model/EquipmentModel.ts";
+import {VehicleModel} from "../model/VehicleModel.ts";
 
 export function VehiclePage() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState();
     const dispatch=useDispatch();
-    const vehicleList=useSelector((state:any)=>state.vehicleSlice.vehicles);
+
+    const vehicleList = useSelector((state: any) => state.vehicleSlice.vehicles) || [];
+
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const filteredVehicles = vehicleList.filter((v: VehicleModel) => {
+        const lowercasedQuery = searchQuery.toLowerCase();
+        return (
+            v.vehicleId.toLowerCase().includes(lowercasedQuery) ||
+            v.licensePlate.toLowerCase().includes(lowercasedQuery)||
+            v.model.toLowerCase().includes(lowercasedQuery)||
+            v.type.toLowerCase().includes(lowercasedQuery)
+        );
+    });
+
+
+    useEffect(() => {
+        //console.log("Vehicle List :"+vehicleList);
+        if (vehicleList.length === 0){
+            dispatch(getVehicles());
+        }
+        console.log("Vehicle List :"+vehicleList);
+    });
+    // dispatch(getVehicles());
+
 
     function handleAddButton() {
         setIsModalOpen(true);
     }
 
-    const dataSource = [
-        {
-            key: '1',
-            vehicleId: 'V001',
-            type: 'Tractor',
-            model: 'John Deere X9',
-            licensePlate: 'ABC-1234',
-            assignedField: 'Field 1',
-        },
-        {
-            key: '2',
-            vehicleId: 'V002',
-            type: 'Truck',
-            model: 'Ford F-150',
-            licensePlate: 'XYZ-5678',
-            assignedField: 'Field 3',
-        },
-    ];
+    // const dataSource = [
+    //     {
+    //         key: '1',
+    //         vehicleId: 'V001',
+    //         type: 'Tractor',
+    //         model: 'John Deere X9',
+    //         licensePlate: 'ABC-1234',
+    //         assignedField: 'Field 1',
+    //     },
+    //     {
+    //         key: '2',
+    //         vehicleId: 'V002',
+    //         type: 'Truck',
+    //         model: 'Ford F-150',
+    //         licensePlate: 'XYZ-5678',
+    //         assignedField: 'Field 3',
+    //     },
+    // ];
 
     function handleUpdate(record) {
         const selectv = vehicleList.find(vehicle => vehicle.vehicleId === record.vehicleId);
@@ -101,7 +128,6 @@ export function VehiclePage() {
         },
     ];
 
-
     const closeModal = () => setIsModalOpen(false);
 
     const handleFormSubmit = (e) => {
@@ -118,14 +144,15 @@ export function VehiclePage() {
 
             <div className="flex flex-col sm:flex-row items-center justify-between mb-4">
                 <div className="flex-grow flex justify-center mb-4 sm:mb-0">
-                    <div className="flex items-center border border-gray-300 rounded-md p-2 w-full max-w-md">
+                   {/* <div className="flex items-center border border-gray-300 rounded-md p-2 w-full max-w-md">
                         <FaSearch className="text-gray-600 mr-2" />
                         <input
                             type="text"
                             placeholder="Search"
                             className="outline-none px-2 py-1 w-full"
                         />
-                    </div>
+                    </div>*/}
+                    <SearchBarComponent placeHolder={"Search Vehicle..."} onSearch={setSearchQuery}/>
                 </div>
 
                 <div className="ml-4 sm:ml-10">
@@ -138,8 +165,7 @@ export function VehiclePage() {
                 </div>
             </div>
 
-            <TableComponent dataSource={vehicleList} columns={columns} />
-
+            <TableComponent dataSource={filteredVehicles} columns={columns}/>
             <ModalComponent
                 title="Add New Vehicle"
                 isOpen={isModalOpen}

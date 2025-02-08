@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FieldModel } from "../model/FieldModel.ts";
 import { deleteField } from "../slices/FieldSlice.ts";
 import { FaSearch } from "react-icons/fa";
+import {SearchBarComponent} from "../components/SearchBarComponent.tsx";
 
 export function FieldPage() {
     const fieldList = useSelector((state: any) => state.fieldSlice.fields);
@@ -66,7 +67,7 @@ export function FieldPage() {
 
 
             <div className="mb-4 pl-8 flex justify-between items-center">
-                <div className="relative w-full md:w-1/3">
+              {/*  <div className="relative w-full md:w-1/3">
                     <input
                         type="text"
                         placeholder="Search by Name, Location, or Crops"
@@ -75,7 +76,10 @@ export function FieldPage() {
                         className="w-full px-4 py-2 pl-10 pr-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
                     <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-                </div>
+
+                </div>*/}
+
+                <SearchBarComponent placeHolder={"Search Field..."} onSearch={setSearchQuery}/>
             </div>
 
             {/* Fields Grid */}

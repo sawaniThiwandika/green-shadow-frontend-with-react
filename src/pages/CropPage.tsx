@@ -7,6 +7,7 @@ import { CropCard } from "../components/cards/CropCard";
 import {useDispatch, useSelector} from "react-redux";
 import {CropModel} from "../model/CropModel.ts";
 import {deleteCrop} from "../slices/CropSlice.ts";
+import {SearchBarComponent} from "../components/SearchBarComponent.tsx";
 
 export interface Crop {
     cropCode: string;
@@ -27,35 +28,6 @@ export function CropPage() {
 
     const [searchQuery, setSearchQuery] = useState("");
 
-    const crops: Crop[] = [
-        {
-            cropCode: "C123",
-            commonName: "Rice",
-            scientificName: "Oryza sativa",
-            image: logo,
-            category: "Cereal",
-            season: "Summer",
-            fieldDetails: "Field 1",
-        },
-        {
-            cropCode: "C124",
-            commonName: "Wheat",
-            scientificName: "Triticum aestivum",
-            image: logo,
-            category: "Cereal",
-            season: "Winter",
-            fieldDetails: "Field 2",
-        },
-        {
-            cropCode: "C125",
-            commonName: "Tomato",
-            scientificName: "Solanum lycopersicum",
-            image: logo,
-            category: "Vegetable",
-            season: "Spring",
-            fieldDetails: "Field 3",
-        },
-    ];
     const filteredCrops = cropList.filter((crop: CropModel) => {
         const lowercasedQuery = searchQuery.toLowerCase();
         return (
@@ -96,7 +68,7 @@ export function CropPage() {
             </h3>
 
             <div className="flex justify-between items-center mb-5">
-                <div className="relative w-1/3">
+               {/* <div className="relative w-1/3">
                     <input
                         type="text"
                         placeholder="Search crops..."
@@ -104,7 +76,8 @@ export function CropPage() {
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                     <FaSearch className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500" />
-                </div>
+                </div>*/}
+                <SearchBarComponent placeHolder={"Search crops..."} onSearch={setSearchQuery} />
 
                 <button
                     type="button"

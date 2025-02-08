@@ -7,6 +7,7 @@ import { StaffFormComponent } from "../components/forms/StaffFormComponent";
 import {useDispatch, useSelector} from "react-redux";
 import { StaffModel } from "../model/StaffModel.ts";
 import {deleteStaff} from "../slices/StaffSlice.ts";
+import {SearchBarComponent} from "../components/SearchBarComponent.tsx";
 
 export function StaffPage() {
     const dispatch=useDispatch();
@@ -94,7 +95,7 @@ export function StaffPage() {
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-between mb-4">
                 <div className="flex-grow flex justify-center mb-4 sm:mb-0">
-                    <div className="flex items-center border border-gray-300 rounded-md p-2 w-full max-w-md">
+                    {/*<div className="flex items-center border border-gray-300 rounded-md p-2 w-full max-w-md">
                         <FaSearch className="text-gray-600 mr-2" />
                         <input
                             type="text"
@@ -103,7 +104,8 @@ export function StaffPage() {
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="outline-none px-2 py-1 w-full"
                         />
-                    </div>
+                    </div>*/}
+                    <SearchBarComponent placeHolder={"Search Staff Member..."} onSearch={setSearchQuery}/>
                 </div>
                 <div className="ml-4 sm:ml-10">
                     <button
