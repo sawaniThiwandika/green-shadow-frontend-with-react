@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from "react";
 import { useDispatch } from "react-redux";
-import {addCrop, updateCrop} from "../../slices/CropSlice.ts";
+import {saveCrop, updateCrop} from "../../slices/CropSlice.ts";
 import {CropModel} from "../../model/CropModel.ts";
-import {addField, updateField} from "../../slices/FieldSlice.ts";
-import { Button ,Input,Form} from 'antd';
+import { Button ,Input} from 'antd';
 import {LabelComponent} from "../LabelComponent.tsx";
 export function CropForm({onSubmit, initialData }): React.ReactElement {
     const dispatch = useDispatch();
@@ -35,15 +34,16 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
             return;
         }
 
-        const crop = new CropModel(cropCode,commonName,scientificName,cropImage,category,season,fieldDetailsCrop)
+        const crop = new CropModel(cropCode,commonName,scientificName,cropImage,category,season,fieldDetailsCrop);
+
 
         if (initialData) {
 
             dispatch(updateCrop(crop));
             alert("Crop Updated Successfully!");
         } else {
-            dispatch(addCrop(crop));
-            alert("Crop Added Successfully!");
+            dispatch(saveCrop(crop));
+
         }
 
         setCropCode("");
@@ -57,7 +57,7 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        setCropImage(URL.createObjectURL(file));
+        setCropImage(file);
     };
 
     return (
@@ -168,6 +168,7 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
                 type="primary"
                 htmlType="submit"
                 className="w-full py-2 mt-4"
+                onClick={handleSubmit}
             >
                 Add Crop
             </Button>

@@ -1,23 +1,13 @@
-import React, { useState } from "react";
-import { FaPlus, FaSearch } from "react-icons/fa";
-import logo from "../assets/logo.png";
+import React, {useEffect, useState} from "react";
+import { FaPlus } from "react-icons/fa";
 import { ModalComponent } from "../components/ModalComponent";
 import { CropForm } from "../components/forms/CropForm";
 import { CropCard } from "../components/cards/CropCard";
 import {useDispatch, useSelector} from "react-redux";
 import {CropModel} from "../model/CropModel.ts";
-import {deleteCrop} from "../slices/CropSlice.ts";
+import {deleteExitingCrop, getCrops} from "../slices/CropSlice.ts";
 import {SearchBarComponent} from "../components/SearchBarComponent.tsx";
 
-export interface Crop {
-    cropCode: string;
-    commonName: string;
-    scientificName: string;
-    image: string;
-    category: string;
-    season: string;
-    fieldDetails: string;
-}
 
 export function CropPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,12 +21,18 @@ export function CropPage() {
     const filteredCrops = cropList.filter((crop: CropModel) => {
         const lowercasedQuery = searchQuery.toLowerCase();
         return (
-            crop.commonName.toLowerCase().includes(lowercasedQuery) ||
-            crop.scientificName.toLowerCase().includes(lowercasedQuery) ||
-            crop.category.toLowerCase().includes(lowercasedQuery)
+            (crop.commonName?.toLowerCase().includes(lowercasedQuery) || false) ||
+            (crop.scientificName?.toLowerCase().includes(lowercasedQuery) || false) ||
+            (crop.category?.toLowerCase().includes(lowercasedQuery) || false)
         );
     });
 
+    useEffect(() => {
+        if (cropList.length === 0){
+            dispatch(getCrops());
+        }
+        console.log("Crop List :"+ cropList);
+    });
 
 
     const handleAddButton = () => setIsModalOpen(true);
@@ -51,7 +47,7 @@ export function CropPage() {
 
     const handleDelete = (crop: CropModel) => {
 
-        dispatch((deleteCrop(crop)));
+        dispatch(deleteExitingCrop(crop.cropCode));
         alert("Delete crop with code: "+crop.cropCode);
         console.log("Delete crop: "+crop.cropCode);
 
