@@ -17,7 +17,7 @@ export function CropCard({
     image: string;
     category: string;
     season: string;
-    fieldDetails: string;
+    fieldDetails: string[];
     onUpdate: (cropCode: string) => void;
     onDelete: (cropCode: string) => void;
 }) {
@@ -25,7 +25,7 @@ export function CropCard({
         <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 hover:shadow-xl">
 
             <img
-                src={image}
+                src={`http://localhost:3000/uploads/${image}`}
                 alt={`${commonName} Image`}
                 className="w-full h-32 object-cover rounded-lg mb-4"
             />
