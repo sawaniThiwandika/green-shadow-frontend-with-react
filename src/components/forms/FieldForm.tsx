@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {FieldModel} from "../../model/FieldModel.ts";
 import {useDispatch} from "react-redux";
-import {addField, updateField} from "../../slices/FieldSlice.ts";
+import {addField, saveField, updateField} from "../../slices/FieldSlice.ts";
 import {LabelComponent} from "../LabelComponent.tsx";
 import {Button, Input} from "antd";
 
@@ -14,7 +14,7 @@ export function FieldForm({onSubmit, initialData  }) {
     const [fieldLocation,setFieldLocation] = useState("");
     const [fieldSize,setFieldSize] = useState("");
     const [fieldImage1,setFieldImage1] = useState("");
-    const [fieldCrops, setFieldCrops] = useState([]);
+    const [fieldCrop, setFieldCrop] = useState("");
     const [fieldStaff, setFieldStaff] = useState([]);
     const [fieldEquipment, setFieldEquipment] = useState([]);
 
@@ -25,7 +25,7 @@ export function FieldForm({onSubmit, initialData  }) {
             setFieldLocation(initialData.fieldLocation || "");
             setFieldSize(initialData.fieldSize || "");
             setFieldImage1(initialData.fieldImage1 || "");
-            setFieldCrops(initialData.crops|| []);
+            setFieldCrop(initialData.crop || "");
             setFieldStaff(initialData.staff || []);
             setFieldEquipment(initialData.equipments || []);
         }
@@ -33,14 +33,14 @@ export function FieldForm({onSubmit, initialData  }) {
 
     function handleSubmit() {
 
-        const field=new FieldModel(fieldCode,fieldName,fieldLocation,fieldSize,fieldImage1,fieldCrops,fieldStaff,fieldEquipment);
+        const field=new FieldModel(fieldCode,fieldName,fieldLocation,fieldSize,fieldImage1,fieldCrop,fieldStaff,fieldEquipment);
 
 
         if (initialData) {
 
             dispatch(updateField(field ));
         } else {
-            dispatch(addField(field));
+            dispatch(saveField(field));
         }
 
 
@@ -48,7 +48,7 @@ export function FieldForm({onSubmit, initialData  }) {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        setFieldImage1(URL.createObjectURL(file));
+        setFieldImage1(file);
     };
 
     return (
@@ -131,8 +131,8 @@ export function FieldForm({onSubmit, initialData  }) {
                 <Input
                     type="text"
                     name="crops"
-                    value={fieldCrops.join(', ')}
-                    onChange={(e) => setFieldCrops(e.target.value.split(',').map(item => item.trim()))}
+                    value={fieldCrop}
+                    onChange={(e) => setFieldCrop(e.target.value)}
                     className="w-full p-3 mt-1 border border-gray-300 rounded-md"
                     placeholder="Enter crops separated by commas"
                 />
@@ -172,7 +172,7 @@ export function FieldForm({onSubmit, initialData  }) {
                         setFieldLocation("");
                         setFieldSize("");
                         setFieldImage1("");
-                        setFieldCrops([]);
+                        setFieldCrop("");
                         setFieldStaff([]);
                         setFieldEquipment([]);
 
@@ -185,7 +185,9 @@ export function FieldForm({onSubmit, initialData  }) {
                 <Button
                     type="primary"
                     className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                    onClick={handleSubmit}
                 >
+
                     Save
                 </Button>
             </div>
