@@ -37,8 +37,23 @@ export const saveCrop = createAsyncThunk('cropSlice/saveCrop', async (crop: Crop
 export const updateExitingCrop=createAsyncThunk('cropSlice/updateExitingCrop',
     async (crop:CropModel)=>{
         try{
-            const response=await api.put(`/update/${crop.cropCode}`,crop);
+            const formData = new FormData();
+            formData.append("cropCode", crop.cropCode);
+            formData.append("commonName", crop.commonName);
+            formData.append("scientificName",crop.scientificName);
+            formData.append("cropImage", crop.image);
+            formData.append("category", crop.category);
+            formData.append("season", crop.season);
+            formData.append("fieldDetails", JSON.stringify(crop.fieldDetails)); // Convert to JSON string
+
+            const response = await api.put(`/update/${crop.cropCode}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             return response.data;
+
+
         }
         catch (error) {
             console.log(error);

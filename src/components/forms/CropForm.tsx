@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { useDispatch } from "react-redux";
-import {saveCrop, updateCrop} from "../../slices/CropSlice.ts";
+import {saveCrop, updateExitingCrop} from "../../slices/CropSlice.ts";
 import {CropModel} from "../../model/CropModel.ts";
 import { Button ,Input} from 'antd';
 import {LabelComponent} from "../LabelComponent.tsx";
@@ -39,7 +39,7 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
 
         if (initialData) {
 
-            dispatch(updateCrop(crop));
+            dispatch(updateExitingCrop(crop));
             alert("Crop Updated Successfully!");
         } else {
             dispatch(saveCrop(crop));
