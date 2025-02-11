@@ -5,10 +5,13 @@ import axios from "axios";
 const initialState = {
     fields: [] as FieldModel[],
 };
+
 const api=axios.create({
     baseURL:'http://localhost:3000/field',
 });
-export const saveField = createAsyncThunk('fieldSlice/saveField', async (field: FieldModel) => {
+
+export const saveField = createAsyncThunk('fieldSlice/saveField',
+    async (field: FieldModel) => {
     try {
 
         const formData = new FormData();
@@ -17,7 +20,7 @@ export const saveField = createAsyncThunk('fieldSlice/saveField', async (field: 
         formData.append("fieldLocation",field.fieldLocation);
         formData.append("fieldSize", field.fieldSize);
         formData.append("fieldImage1", field.fieldImage1);
-        formData.append("crop",field.crop);
+        formData.append("crop",field.cropCode);
         formData.append("equipment",JSON.stringify( field.equipment));
         formData.append("staff", JSON.stringify(field.staff));
 
@@ -34,6 +37,45 @@ export const saveField = createAsyncThunk('fieldSlice/saveField', async (field: 
     }
 });
 
+export const deleteExitingField=createAsyncThunk('fieldSlice/ deleteExitingField',
+    async (fieldCode:string)=>{
+        try{
+            const response=await api.delete(`/delete/${fieldCode}`);
+            return response.data;
+        }
+        catch(error){
+            console.log(error);
+
+        }
+
+    });
+
+export const updateExitingField = createAsyncThunk('fieldSlice/updateField',
+    async (field: FieldModel) => {
+
+    try {
+        const formData = new FormData();
+        formData.append("fieldCode", field.fieldCode);
+        formData.append("fieldName", field.fieldName);
+        formData.append("fieldLocation",field.fieldLocation);
+        formData.append("fieldSize", field.fieldSize);
+        formData.append("fieldImage1", field.fieldImage1);
+        formData.append("crop",field.cropCode);
+        formData.append("equipment",JSON.stringify( field.equipment));
+        formData.append("staff", JSON.stringify(field.staff));
+
+        const response = await api.put(`/update/${field.fieldCode}`,  formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+
+    } catch (error) {
+        console.error("Error updating field:", error);
+        throw error;
+    }
+});
 
 export const getFields=createAsyncThunk('fieldSlice/getFields',
     async ()=>{
@@ -91,7 +133,7 @@ const fieldSlice = createSlice({
             .addCase(getFields.rejected, (state, action) => {
                 console.log("Rejected");
             })
-        /*.addCase(updateExitingField.pending,(state, action) => {
+        .addCase(updateExitingField.pending,(state, action) => {
             console.log("Pending");
         })
         .addCase(updateExitingField.fulfilled, (state, action) => {
@@ -111,8 +153,6 @@ const fieldSlice = createSlice({
         .addCase(deleteExitingField.rejected, (state, action) => {
             console.log("Rejected");
         })
-        */
-
 
 
 
