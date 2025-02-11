@@ -33,7 +33,7 @@ export function FieldForm({onSubmit, initialData  }) {
 
     function handleSubmit() {
 
-        const field=new FieldModel(fieldCode,fieldName,fieldLocation,fieldSize,fieldImage1,fieldCrop,fieldStaff,fieldEquipment);
+        const field=new FieldModel(fieldCode,fieldName,fieldLocation,fieldSize,fieldImage1,fieldCrop,fieldStaff,fieldEquipment,[]);
 
 
         if (initialData) {

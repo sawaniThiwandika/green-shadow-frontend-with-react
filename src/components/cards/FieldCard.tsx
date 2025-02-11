@@ -6,7 +6,7 @@ export function FieldCard({
                               fieldLocation,
                               fieldSize,
                               fieldImage1,
-                              crops,
+                              crop,
                               staff,
                               onUpdate,
                               onDelete,
@@ -14,9 +14,9 @@ export function FieldCard({
     fieldCode: string;
     fieldName: string;
     fieldLocation: string;
-    fieldSize: number;
+    fieldSize: string;
     fieldImage1: string;
-    crops: string[];
+    crop: string;
     staff: string[];
     onUpdate: (fieldCode: string) => void;
     onDelete: (fieldCode: string) => void;
@@ -24,7 +24,7 @@ export function FieldCard({
     return (
         <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 hover:shadow-xl">
             <img
-                src={fieldImage1}
+                src={`http://localhost:3000/uploads/field/${fieldImage1}`}
                 alt={`${fieldName} Image`}
                 className="w-full h-32 object-cover rounded-lg mb-4"
             />
@@ -37,13 +37,13 @@ export function FieldCard({
             </p>
 
             <div className="mt-2">
-                <strong>Crops:</strong>
-                <p className="text-sm text-gray-500">{crops.join(", ")}</p>
+                <strong>Crop:</strong>
+                <p className="text-sm text-gray-500">{crop}</p>
             </div>
 
             <div className="mt-2">
                 <strong>Staff:</strong>
-                <p className="text-sm text-gray-500">{staff.join(", ")}</p>
+ {/*               <p className="text-sm text-gray-500">{staff.join(", ")}</p>*/}
             </div>
 
             <div className="flex justify-between mt-4">
