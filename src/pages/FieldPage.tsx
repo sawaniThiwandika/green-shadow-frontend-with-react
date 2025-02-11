@@ -4,7 +4,7 @@ import { FieldForm } from "../components/forms/FieldForm";
 import { ModalComponent } from "../components/ModalComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { FieldModel } from "../model/FieldModel.ts";
-import {deleteField, getFields} from "../slices/FieldSlice.ts";
+import {deleteExitingField, deleteField, getFields} from "../slices/FieldSlice.ts";
 import {SearchBarComponent} from "../components/SearchBarComponent.tsx";
 
 
@@ -51,7 +51,7 @@ export function FieldPage() {
     };
 
     const handleDeleteField = (field: FieldModel) => {
-        dispatch(deleteField(field));
+        dispatch(deleteExitingField(field.fieldCode));
     };
 
 

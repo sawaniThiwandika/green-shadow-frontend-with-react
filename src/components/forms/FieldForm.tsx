@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {FieldModel} from "../../model/FieldModel.ts";
 import {useDispatch} from "react-redux";
-import {addField, saveField, updateField} from "../../slices/FieldSlice.ts";
+import {addField, saveField, updateExitingField, updateField} from "../../slices/FieldSlice.ts";
 import {LabelComponent} from "../LabelComponent.tsx";
 import {Button, Input} from "antd";
+import {updateExitingCrop} from "../../slices/CropSlice.ts";
 
 export function FieldForm({onSubmit, initialData  }) {
 
@@ -38,7 +39,7 @@ export function FieldForm({onSubmit, initialData  }) {
 
         if (initialData) {
 
-            dispatch(updateField(field ));
+            dispatch(updateExitingField(field));
         } else {
             dispatch(saveField(field));
         }
