@@ -1,19 +1,24 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import FieldCard from "../components/cards/FieldCard";
 import { FieldForm } from "../components/forms/FieldForm";
 import { ModalComponent } from "../components/ModalComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { FieldModel } from "../model/FieldModel.ts";
-import { deleteField } from "../slices/FieldSlice.ts";
-import { FaSearch } from "react-icons/fa";
+import {deleteField, getFields} from "../slices/FieldSlice.ts";
 import {SearchBarComponent} from "../components/SearchBarComponent.tsx";
+
 
 export function FieldPage() {
     const fieldList = useSelector((state: any) => state.fieldSlice.fields);
     const dispatch = useDispatch();
     const [selectedField, setSelectedField] = useState<FieldModel | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
-
+    useEffect(() => {
+        if (fieldList.length === 0){
+            dispatch(getFields());
+        }
+        //console.log("Field List :"+ fieldList[0].cropCode);
+    });
     const dataSource = fieldList
         .map((field: FieldModel, index: number) => ({
             key: index.toString(),
@@ -22,7 +27,7 @@ export function FieldPage() {
             fieldImage1: field.fieldImage1,
             fieldLocation: field.fieldLocation,
             fieldSize: field.fieldSize,
-            crops: field.crops,
+            crop: field.cropCode,
             staff: field.staff,
             equipments: field.equipment,
         }))
@@ -49,9 +54,6 @@ export function FieldPage() {
         dispatch(deleteField(field));
     };
 
-    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(e.target.value);
-    };
 
     return (
         <div className="container mx-auto my-8">
@@ -88,7 +90,7 @@ export function FieldPage() {
                 id="fieldContainer"
                 style={{ maxHeight: "calc(100vh - 100px)" }}
             >
-                {dataSource.map((field) => (
+                {dataSource.map((field:FieldModel) => (
                     <FieldCard
                         key={field.fieldCode}
                         fieldCode={field.fieldCode}
@@ -96,7 +98,7 @@ export function FieldPage() {
                         fieldLocation={field.fieldLocation}
                         fieldSize={field.fieldSize}
                         fieldImage1={field.fieldImage1}
-                        crops={field.crops}
+                        crop={field.cropCode}
                         staff={field.staff}
                         onUpdate={() => handleUpdateField(field)}
                         onDelete={() => handleDeleteField(field)}
