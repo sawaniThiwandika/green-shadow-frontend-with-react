@@ -35,6 +35,17 @@ export const saveField = createAsyncThunk('fieldSlice/saveField', async (field: 
 });
 
 
+export const getFields=createAsyncThunk('fieldSlice/getFields',
+    async ()=>{
+        const response=await api.get('/getAll');
+        return response.data;
+
+    }
+
+);
+
+
+
 const fieldSlice = createSlice({
     name: "fieldSlice",
     initialState,
@@ -70,34 +81,38 @@ const fieldSlice = createSlice({
             .addCase(saveField.rejected, (state, action) => {
                 console.log("Rejected");
             })
-            /*.addCase(getFields.pending, (state, action) => {
+            .addCase(getFields.pending, (state, action) => {
                 console.log("Pending");
             })
 
             .addCase(getFields.fulfilled, (state, action) => {
-                state.crops = action.payload;
+                state.fields = action.payload;
             })
             .addCase(getFields.rejected, (state, action) => {
                 console.log("Rejected");
             })
-            .addCase(updateExitingField.pending,(state, action) => {
-                console.log("Pending");
-            })
-            .addCase(updateExitingField.fulfilled, (state, action) => {
-                console.log("fulfilled");
-            })
-            .addCase(updateExitingField.rejected, (state, action) => {
-                console.log("Rejected");
-            })
-            .addCase(deleteExitingField.pending,(state, action) => {
-                console.log("Pending");
-            })
-            .addCase(deleteExitingField.fulfilled, (state, action) => {
-                console.log("fulfilled");
-            })
-            .addCase(deleteExitingField.rejected, (state, action) => {
-                console.log("Rejected");
-            })*/
+        /*.addCase(updateExitingField.pending,(state, action) => {
+            console.log("Pending");
+        })
+        .addCase(updateExitingField.fulfilled, (state, action) => {
+            console.log("fulfilled");
+        })
+        .addCase(updateExitingField.rejected, (state, action) => {
+            console.log("Rejected");
+        })
+
+
+        .addCase(deleteExitingField.pending,(state, action) => {
+            console.log("Pending");
+        })
+        .addCase(deleteExitingField.fulfilled, (state, action) => {
+            console.log("fulfilled");
+        })
+        .addCase(deleteExitingField.rejected, (state, action) => {
+            console.log("Rejected");
+        })
+        */
+
 
 
 
