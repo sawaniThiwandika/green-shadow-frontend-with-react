@@ -35,7 +35,7 @@ export const updateExitingVehicle=createAsyncThunk('vehicleSlice/updateExitingVe
 
     });
 
-export const deleteExitingVehicle=createAsyncThunk('customerSlice/ deleteExitingVehicle',
+export const deleteExitingVehicle=createAsyncThunk('staffSlice/ deleteExitingVehicle',
     async (vehicleId:string)=>{
         try{
             const response=await api.delete(`/delete/${vehicleId}`);
@@ -119,9 +119,6 @@ const vehicleSlice = createSlice({
             .addCase(deleteExitingVehicle.rejected, (state, action) => {
                 console.log("Rejected");
             })
-
-
-
 
     }
 
