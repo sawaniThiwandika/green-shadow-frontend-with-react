@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { TableComponent } from "../components/TableComponent";
 import { FaSearch } from "react-icons/fa";
 import { BiPlus } from "react-icons/bi";
@@ -6,8 +6,9 @@ import { ModalComponent } from "../components/ModalComponent";
 import { StaffFormComponent } from "../components/forms/StaffFormComponent";
 import {useDispatch, useSelector} from "react-redux";
 import { StaffModel } from "../model/StaffModel.ts";
-import {deleteStaff} from "../slices/StaffSlice.ts";
+import {deleteStaff, getStaff} from "../slices/StaffSlice.ts";
 import {SearchBarComponent} from "../components/SearchBarComponent.tsx";
+import {getFields} from "../slices/FieldSlice.ts";
 
 export function StaffPage() {
     const dispatch=useDispatch();
@@ -16,6 +17,14 @@ export function StaffPage() {
     const [selectedStaff, setSelectedStaff] = useState(null);
 
     const staffList = useSelector((state: any) => state.staffSlice.staff);
+
+    useEffect(() => {
+        if (staffList.length === 0){
+            dispatch(getStaff());
+        }
+
+    });
+
     const dataSource = staffList.map((staff: StaffModel, index: number) => ({
         key: index.toString(),
         staffId: staff.staffId,
