@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { StaffModel } from "../../model/StaffModel";
 import {useDispatch, useSelector} from "react-redux";
-import {addStaff, saveStaff, updateStaff} from "../../slices/StaffSlice.ts";
+import {addStaff, saveStaff, updateExitingStaff, updateStaff} from "../../slices/StaffSlice.ts";
 import {Button, Input} from "antd";
 import {LabelComponent} from "../LabelComponent.tsx";
 
@@ -54,7 +54,7 @@ export function StaffFormComponent({ onSubmit, initialData }) {
 
         if (staffId && staffId === initialData?.staffId) {
 
-            dispatch(updateStaff(staffData));
+            dispatch(updateExitingStaff(staffData));
             console.log("Update staff: ", staffData);
 
         } else {
