@@ -1,8 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import { StaffModel } from "../model/StaffModel.ts";
 import axios from "axios";
-import {VehicleModel} from "../model/VehicleModel.ts";
-import {updateExitingVehicle} from "./VehicleSlice.ts";
 
 const initialState = {
     staff: [] as StaffModel[],
@@ -34,6 +32,19 @@ export const updateExitingStaff=createAsyncThunk('staffSlice/updateExitingStaff'
         }
         catch (error) {
             console.log(error);
+        }
+
+    });
+
+export const deleteExitingStaff=createAsyncThunk('staffSlice/ deleteExitingStaff',
+    async (staffId:string)=>{
+        try{
+            const response=await api.delete(`/delete/${staffId}`);
+            return response.data;
+        }
+        catch(error){
+            console.log(error);
+
         }
 
     });
@@ -98,6 +109,15 @@ const staffSlice = createSlice({
                 console.log("fulfilled");
             })
             .addCase(updateExitingStaff.rejected, (state, action) => {
+                console.log("Rejected");
+            })
+            .addCase(deleteExitingStaff.pending,(state, action) => {
+                console.log("Pending");
+            })
+            .addCase(deleteExitingStaff.fulfilled, (state, action) => {
+                console.log("fulfilled");
+            })
+            .addCase(deleteExitingStaff.rejected, (state, action) => {
                 console.log("Rejected");
             })
 
