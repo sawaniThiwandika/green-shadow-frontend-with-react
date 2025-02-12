@@ -1,9 +1,28 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import { StaffModel } from "../model/StaffModel.ts";
+import axios from "axios";
 
 const initialState = {
     staff: [] as StaffModel[],
 };
+
+const api=axios.create({
+    baseURL:'http://localhost:3000/staff',
+});
+
+export const saveStaff=createAsyncThunk('staffSlice/saveStaff',
+    async (staff:StaffModel)=>{
+        try{
+            const response=await api.post('/add',staff);
+            return response.data;
+
+        }
+        catch(error){
+            console.log(error);
+
+        }
+
+    });
 
 const staffSlice = createSlice({
     name: "staffSlice",
@@ -26,6 +45,20 @@ const staffSlice = createSlice({
             );
         },
     },
+
+    extraReducers:(builder) => {
+        builder
+            .addCase(saveStaff.pending, (state, action) => {
+                console.log("Pending");
+            })
+
+            .addCase(saveStaff.fulfilled, (state, action) => {
+                state.staff.push(action.payload);
+            })
+            .addCase(saveStaff.rejected, (state, action) => {
+                console.log("Rejected");
+            })
+    }
 });
 
 export const { addStaff, updateStaff, deleteStaff } = staffSlice.actions;
