@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import { StaffModel } from "../model/StaffModel.ts";
 import axios from "axios";
+import {getVehicles} from "./VehicleSlice.ts";
 
 const initialState = {
     staff: [] as StaffModel[],
@@ -24,6 +25,14 @@ export const saveStaff=createAsyncThunk('staffSlice/saveStaff',
 
     });
 
+export const getStaff=createAsyncThunk('staffSlice/getStaff',
+    async ()=>{
+        const response=await api.get('/getAll');
+        return response.data;
+
+    }
+
+);
 const staffSlice = createSlice({
     name: "staffSlice",
     initialState,
@@ -58,6 +67,18 @@ const staffSlice = createSlice({
             .addCase(saveStaff.rejected, (state, action) => {
                 console.log("Rejected");
             })
+            .addCase(getStaff.pending, (state, action) => {
+                console.log("Pending");
+            })
+
+            .addCase(getStaff.fulfilled, (state, action) => {
+                state.staff = action.payload;
+            })
+            .addCase(getStaff.rejected, (state, action) => {
+                console.log("Rejected");
+            })
+
+
     }
 });
 
