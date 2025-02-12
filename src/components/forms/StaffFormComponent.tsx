@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { StaffModel } from "../../model/StaffModel";
 import {useDispatch, useSelector} from "react-redux";
-import {addStaff, updateStaff} from "../../slices/StaffSlice.ts";
+import {addStaff, saveStaff, updateStaff} from "../../slices/StaffSlice.ts";
 import {Button, Input} from "antd";
 import {LabelComponent} from "../LabelComponent.tsx";
 
@@ -59,7 +59,7 @@ export function StaffFormComponent({ onSubmit, initialData }) {
 
         } else {
 
-            dispatch(addStaff(staffData));
+            dispatch(saveStaff(staffData));
             console.log("Add new:  ", staffData);
         }
 
@@ -213,6 +213,7 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 <Button
                     type="primary"
                     className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                    onClick={handleSubmit}
                 >
                     Submit
                 </Button>
