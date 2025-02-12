@@ -6,7 +6,7 @@ import { ModalComponent } from "../components/ModalComponent";
 import { StaffFormComponent } from "../components/forms/StaffFormComponent";
 import {useDispatch, useSelector} from "react-redux";
 import { StaffModel } from "../model/StaffModel.ts";
-import {deleteStaff, getStaff} from "../slices/StaffSlice.ts";
+import {deleteExitingStaff, deleteStaff, getStaff} from "../slices/StaffSlice.ts";
 import {SearchBarComponent} from "../components/SearchBarComponent.tsx";
 import {getFields} from "../slices/FieldSlice.ts";
 
@@ -49,7 +49,7 @@ export function StaffPage() {
     const handleDelete = (record) => {
         const confirmed = window.confirm(`Are you sure you want to delete ${record.name}?`);
         if (confirmed) {
-            dispatch(deleteStaff(record));
+            dispatch(deleteExitingStaff(record.staffId));
             console.log(`Deleting staff with ID: ${record.staffId}`);
         }
     };
