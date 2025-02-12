@@ -1,7 +1,8 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import { StaffModel } from "../model/StaffModel.ts";
 import axios from "axios";
-import {getVehicles} from "./VehicleSlice.ts";
+import {VehicleModel} from "../model/VehicleModel.ts";
+import {updateExitingVehicle} from "./VehicleSlice.ts";
 
 const initialState = {
     staff: [] as StaffModel[],
@@ -24,6 +25,19 @@ export const saveStaff=createAsyncThunk('staffSlice/saveStaff',
         }
 
     });
+
+export const updateExitingStaff=createAsyncThunk('staffSlice/updateExitingStaff',
+    async (staff:StaffModel)=>{
+        try{
+            const response=await api.put(`/update/${staff.staffId}`,staff);
+            return response.data;
+        }
+        catch (error) {
+            console.log(error);
+        }
+
+    });
+
 
 export const getStaff=createAsyncThunk('staffSlice/getStaff',
     async ()=>{
@@ -75,6 +89,15 @@ const staffSlice = createSlice({
                 state.staff = action.payload;
             })
             .addCase(getStaff.rejected, (state, action) => {
+                console.log("Rejected");
+            })
+            .addCase(updateExitingStaff.pending,(state, action) => {
+                console.log("Pending");
+            })
+            .addCase(updateExitingStaff.fulfilled, (state, action) => {
+                console.log("fulfilled");
+            })
+            .addCase(updateExitingStaff.rejected, (state, action) => {
                 console.log("Rejected");
             })
 
