@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {LogModel} from "../../model/LogModel.ts";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addLog, updateLog} from "../../slices/LogSlice.ts";
 import {Button, Input} from "antd";
 import {LabelComponent} from "../LabelComponent.tsx";
+import {StaffModel} from "../../model/StaffModel.ts";
 
 export function LogFormComponent({onSubmit, initialData}) {
     const dispatch = useDispatch();
@@ -14,8 +15,15 @@ export function LogFormComponent({onSubmit, initialData}) {
     const [observedImage, setObservedImage] = useState("");
     const [relevantField, setRelevantField] = useState("");
     const [relevantCrop, setRelevantCrop] = useState("");
-    const [relevantStaff, setRelevantStaff] = useState([]);
+    const [relevantStaff, setRelevantStaff] = useState([]as string[]);
+    const [searchTerm, setSearchTerm] = useState("");
 
+
+    const staffList = useSelector((state: any) => state.staffSlice.staff);
+
+    const filteredStaff = staffList.filter((staff: StaffModel) =>
+        staff.staffId.toLowerCase().includes(searchTerm.toLowerCase())
+    );
     useEffect(() => {
         if (initialData) {
             setLogCode(initialData.logCode || "");
@@ -125,6 +133,8 @@ export function LogFormComponent({onSubmit, initialData}) {
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="Enter relevant fields separated by commas"
                 />
+
+
             </div>
 
             <div className="mb-4">
@@ -149,10 +159,39 @@ export function LogFormComponent({onSubmit, initialData}) {
                     id='rStaff'
                     type="text"
                     value={relevantStaff.join(", ")}
-                    onChange={(e) => setRelevantStaff(e.target.value.split(',').map(item => item.trim()))}
+                    /*onChange={
+                    (e) => setRelevantStaff(e.target.value.split(',').map(item => item.trim()))}*/
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="Enter relevant staff separated by commas"
+                    name="rStaff"
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        setRelevantStaff(e.target.value.split(",").map((item) => item.trim()));
+                    }}
                 />
+
+                {searchTerm && (
+                    <ul className="bg-white border border-gray-300 rounded-md max-h-60 overflow-auto z-10">
+                        {filteredStaff.length > 0 ? (
+                            filteredStaff.map((staff: StaffModel, index) => (
+                                <li
+                                    key={index}
+                                    className="px-2 py-1 cursor-pointer hover:bg-blue-100"
+                                    onClick={() => {
+                                        setRelevantStaff([...relevantStaff,staff.staffId]);
+                                       // setSearchTerm("");
+                                    }}
+                                >
+                                    {staff.staffId}
+                                </li>
+                            ))
+                        ) : (
+                            <li className="px-2 py-1 text-gray-500">No staff found</li>
+                        )}
+                    </ul>
+
+                )}
+
             </div>
 
             <div className="flex justify-end mt-6">
@@ -174,6 +213,7 @@ export function LogFormComponent({onSubmit, initialData}) {
                 <Button
                     type="primary"
                     className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                    onClick={handleSubmit}
                 >
                     Save
                 </Button>
