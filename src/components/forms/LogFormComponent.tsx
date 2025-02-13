@@ -2,9 +2,11 @@ import React, {useEffect, useState} from "react";
 import {LogModel} from "../../model/LogModel.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {addLog, updateLog} from "../../slices/LogSlice.ts";
-import {Button, Input} from "antd";
+import {Button, Input, Select} from "antd";
 import {LabelComponent} from "../LabelComponent.tsx";
 import {StaffModel} from "../../model/StaffModel.ts";
+import {FieldModel} from "../../model/FieldModel.ts";
+import {CropModel} from "../../model/CropModel.ts";
 
 export function LogFormComponent({onSubmit, initialData}) {
     const dispatch = useDispatch();
@@ -15,11 +17,13 @@ export function LogFormComponent({onSubmit, initialData}) {
     const [observedImage, setObservedImage] = useState("");
     const [relevantField, setRelevantField] = useState("");
     const [relevantCrop, setRelevantCrop] = useState("");
-    const [relevantStaff, setRelevantStaff] = useState([]as string[]);
+    const [relevantStaff, setRelevantStaff] = useState([] as string[]);
     const [searchTerm, setSearchTerm] = useState("");
 
 
     const staffList = useSelector((state: any) => state.staffSlice.staff);
+    const fieldList = useSelector((state: any) => state.fieldSlice.fields);
+    const cropList = useSelector((state: any) => state.cropSlice.crops);
 
     const filteredStaff = staffList.filter((staff: StaffModel) =>
         staff.staffId.toLowerCase().includes(searchTerm.toLowerCase())
@@ -73,7 +77,6 @@ export function LogFormComponent({onSubmit, initialData}) {
             className="max-w-lg mx-auto p-5 bg-white rounded-lg shadow-md"
         >
             <div className="mb-4">
-               {/* <label className="block text-sm font-medium text-gray-700">Log Code</label>*/}
                 <LabelComponent htmlFor={"logCode"} text={"Log Code"}/>
                 <Input
                     type="text"
@@ -86,7 +89,6 @@ export function LogFormComponent({onSubmit, initialData}) {
             </div>
 
             <div className="mb-4">
-               {/* <label className="block text-sm font-medium text-gray-700">Log Date</label>*/}
                 <LabelComponent htmlFor={"logDate"} text={"Log Date"}/>
                 <Input
                     type="date"
@@ -98,7 +100,6 @@ export function LogFormComponent({onSubmit, initialData}) {
             </div>
 
             <div className="mb-4">
-                {/*<label className="block text-sm font-medium text-gray-700">Log Details</label>*/}
                 <LabelComponent htmlFor={"logDetails"} text={"Log Details"}/>
                 <textarea
                     value={logDetails}
@@ -110,7 +111,6 @@ export function LogFormComponent({onSubmit, initialData}) {
             </div>
 
             <div className="mb-4">
-               {/* <label className="block text-sm font-medium text-gray-700">Observed Image</label>*/}
                 <LabelComponent htmlFor={"observedImage"} text={"Observed Image"}/>
                 <Input
                     id='observedImage'
@@ -121,39 +121,49 @@ export function LogFormComponent({onSubmit, initialData}) {
             </div>
 
             <div className="mb-4">
-               {/* <label className="block text-sm font-medium text-gray-700">Relevant Fields</label>*/}
-                <LabelComponent htmlFor={"releventFields"} text={"Relevant Fields"}/>
-                <Input
-                    type="text"
+                <LabelComponent htmlFor={"relevantFields"} text={"Relevant Fields"}/>
+                <select
+                    name="relevantField"
                     value={relevantField}
                     id={"relevantFields"}
-
                     onChange={(e) => setRelevantField(e.target.value)}
+                    className="w-full border border-gray-300 rounded-md px-2 py-1 required"
 
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="Enter relevant fields separated by commas"
-                />
+                >
 
+                    <option value="">Select Field</option>
+                    {fieldList.map((field: FieldModel) => (
+                        <option key={field.fieldCode} value={field.fieldCode}>
+                            {field.fieldName}
+                        </option>
+                    ))}
 
+                </select>
             </div>
 
+
             <div className="mb-4">
-               {/* <label className="block text-sm font-medium text-gray-700">Relevant Crops</label>*/}
                 <LabelComponent htmlFor={"releventCrops"} text={"Relevant Crops"}/>
-                <Input
+                <select
                     id='relevantCrops'
-                    type="text"
                     value={relevantCrop}
                     onChange={(e) =>
                         setRelevantCrop(e.target.value)
                     }
                     className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="Enter relevant crops separated by commas"
-                />
+
+                >
+                    <option value="">Select Crop</option>
+                    {cropList.map((crop: CropModel) => (
+                        <option key={crop.cropCode} value={crop.cropCode}>
+                            {crop.commonName}
+                        </option>
+                    ))}
+
+                </select>
             </div>
 
             <div className="mb-4">
-               {/* <label className="block text-sm font-medium text-gray-700">Relevant Staff</label>*/}
                 <LabelComponent htmlFor={"rStaff"} text={"Relevant Staff"}/>
                 <Input
                     id='rStaff'
@@ -178,8 +188,8 @@ export function LogFormComponent({onSubmit, initialData}) {
                                     key={index}
                                     className="px-2 py-1 cursor-pointer hover:bg-blue-100"
                                     onClick={() => {
-                                        setRelevantStaff([...relevantStaff,staff.staffId]);
-                                       // setSearchTerm("");
+                                        setRelevantStaff([...relevantStaff, staff.staffId]);
+                                        // setSearchTerm("");
                                     }}
                                 >
                                     {staff.staffId}
