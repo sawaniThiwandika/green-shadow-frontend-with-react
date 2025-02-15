@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
+import React, {useEffect, useState} from 'react';
 import { BiPlus } from 'react-icons/bi';
 import { ModalComponent } from '../components/ModalComponent';
 import { LogFormComponent } from '../components/forms/LogFormComponent';
 import { TableComponent } from '../components/TableComponent';
 import {useDispatch, useSelector} from "react-redux";
 import {LogModel} from "../model/LogModel.ts";
-import {deleteLog} from "../slices/LogSlice.ts";
+import {deleteLog, getLogs} from "../slices/LogSlice.ts";
 import {SearchBarComponent} from "../components/SearchBarComponent.tsx";
 
 export function LogsPage(){
@@ -16,6 +15,14 @@ export function LogsPage(){
     const [searchQuery, setSearchQuery] = useState<string>("");
     const dispatch=useDispatch();
 
+    useEffect(() => {
+        if (logList.length === 0){
+            dispatch(getLogs());
+        }
+
+    });
+
+
 
     const dataSource = logList.map((log: LogModel, index: number) => ({
 
@@ -24,7 +31,7 @@ export function LogsPage(){
         date: log.logDate,
         activity: log.logDetails,
         image:log.observedImage,
-        responsibleStaff: log.relevantStaff.map((staff: any) => staff).join(', '),
+      // responsibleStaff: log.relevantStaff.map((staff: any) => staff).join(', '),
 
 
     }));
