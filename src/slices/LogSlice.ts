@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {LogModel} from "../model/LogModel";
 import axios from "axios";
+import {getCrops} from "./CropSlice.ts";
 
 const initialState = {
     logs: [] as LogModel[],
@@ -34,6 +35,15 @@ export const saveLog = createAsyncThunk('logSlice/saveLog',
             throw error;
         }
     });
+
+export const getLogs=createAsyncThunk('logSlice/getLogs',
+    async ()=>{
+        const response=await api.get('/getAll');
+        return response.data;
+
+    }
+
+);
 
 
 
@@ -70,6 +80,16 @@ const logSlice = createSlice({
                 state.logs.push(action.payload);
             })
             .addCase(saveLog.rejected, (state, action) => {
+                console.log("Rejected");
+            })
+            .addCase(getLogs.pending, (state, action) => {
+                console.log("Pending");
+            })
+
+            .addCase(getLogs.fulfilled, (state, action) => {
+                state.logs = action.payload;
+            })
+            .addCase(getLogs.rejected, (state, action) => {
                 console.log("Rejected");
             })
 
