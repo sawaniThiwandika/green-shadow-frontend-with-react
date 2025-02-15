@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {LogModel} from "../../model/LogModel.ts";
 import {useDispatch, useSelector} from "react-redux";
-import {addLog, updateLog} from "../../slices/LogSlice.ts";
+import {addLog, saveLog, updateLog} from "../../slices/LogSlice.ts";
 import {Button, Input, Select} from "antd";
 import {LabelComponent} from "../LabelComponent.tsx";
 import {StaffModel} from "../../model/StaffModel.ts";
@@ -17,7 +17,7 @@ export function LogFormComponent({onSubmit, initialData}) {
     const [observedImage, setObservedImage] = useState("");
     const [relevantField, setRelevantField] = useState("");
     const [relevantCrop, setRelevantCrop] = useState("");
-    const [relevantStaff, setRelevantStaff] = useState([] as string[]);
+    const [relevantStaff, setRelevantStaff] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
 
@@ -36,7 +36,7 @@ export function LogFormComponent({onSubmit, initialData}) {
             setObservedImage(initialData.observedImage || "");
             setRelevantField(initialData.relevantFields || "");
             setRelevantCrop(initialData.relevantCrops || "");
-            setRelevantStaff(initialData.relevantStaff || []);
+            setRelevantStaff(Array.isArray(initialData.relevantStaff) ? initialData.relevantStaff : []);
         }
     }, [initialData]);
 
@@ -54,7 +54,9 @@ export function LogFormComponent({onSubmit, initialData}) {
         if (initialData) {
             dispatch(updateLog(log));
         } else {
-            dispatch(addLog(log));
+
+            console.log("staff list of log :"+relevantStaff[0]);
+            dispatch(saveLog(log));
         }
 
         if (onSubmit) onSubmit();
@@ -64,9 +66,15 @@ export function LogFormComponent({onSubmit, initialData}) {
 
         const file = e.target.files[0];
         if (file) {
-            setObservedImage(URL.createObjectURL(file));
+            setObservedImage(file);
         }
     };
+    const handleStaffSelection = (staffId:string) => {
+        if (!relevantStaff.includes(staffId)) {
+            setRelevantStaff([...relevantStaff, staffId]);
+        }
+    };
+
 
     return (
         <form
@@ -143,7 +151,7 @@ export function LogFormComponent({onSubmit, initialData}) {
 
 
             <div className="mb-4">
-                <LabelComponent htmlFor={"releventCrops"} text={"Relevant Crops"}/>
+                <LabelComponent htmlFor={"relevantCrops"} text={"Relevant Crops"}/>
                 <select
                     id='relevantCrops'
                     value={relevantCrop}
@@ -176,7 +184,7 @@ export function LogFormComponent({onSubmit, initialData}) {
                     name="rStaff"
                     onChange={(e) => {
                         setSearchTerm(e.target.value);
-                        setRelevantStaff(e.target.value.split(",").map((item) => item.trim()));
+                       // setRelevantStaff(e.target.value.split(",").map((item) => item.trim()));
                     }}
                 />
 
@@ -188,7 +196,7 @@ export function LogFormComponent({onSubmit, initialData}) {
                                     key={index}
                                     className="px-2 py-1 cursor-pointer hover:bg-blue-100"
                                     onClick={() => {
-                                        setRelevantStaff([...relevantStaff, staff.staffId]);
+                                    handleStaffSelection(staff.staffId)
                                         // setSearchTerm("");
                                     }}
                                 >
