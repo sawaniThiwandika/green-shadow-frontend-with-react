@@ -25,7 +25,7 @@ export function CropCard({
         <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 hover:shadow-xl">
 
             <img
-                src={`http://localhost:3000/uploads/${image}`}
+                src={`http://localhost:3000/uploads/crop/${image}`}
                 alt={`${commonName} Image`}
                 className="w-full h-32 object-cover rounded-lg mb-4"
             />
