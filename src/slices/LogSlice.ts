@@ -1,14 +1,11 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {LogModel} from "../model/LogModel";
-import axios from "axios";
-import {getCrops} from "./CropSlice.ts";
+import api from "../service/api-services.ts";
+import Swal from "sweetalert2";
 
 const initialState = {
     logs: [] as LogModel[],
 };
-const api=axios.create({
-    baseURL:'http://localhost:3000/log',
-});
 
 export const saveLog = createAsyncThunk('logSlice/saveLog',
     async (log :LogModel) => {
@@ -23,14 +20,26 @@ export const saveLog = createAsyncThunk('logSlice/saveLog',
             formData.append("observedImage",log.observedImage);
             formData.append("relevantStaff", JSON.stringify(log.relevantStaff));
 
-            const response = await api.post('/add', formData, {
+            const response = await api.post('/log/add', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            Swal.fire({
+                icon: "success",
+                title: "Log Saved",
+                text: "The Log has been successfully added!",
+                confirmButtonText: "OK"
+            });
             return response.data;
 
         } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!"
+            });
+
             console.error("Error saving log:", error);
             throw error;
         }
@@ -38,13 +47,12 @@ export const saveLog = createAsyncThunk('logSlice/saveLog',
 
 export const getLogs=createAsyncThunk('logSlice/getLogs',
     async ()=>{
-        const response=await api.get('/getAll');
+        const response=await api.get('/log/getAll');
         return response.data;
 
     }
 
 );
-
 
 
 const logSlice = createSlice({

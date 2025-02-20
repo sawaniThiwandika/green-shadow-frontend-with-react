@@ -1,23 +1,32 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import { StaffModel } from "../model/StaffModel.ts";
-import axios from "axios";
-
+import api from "../service/api-services.ts";
+import Swal from 'sweetalert2';
 const initialState = {
     staff: [] as StaffModel[],
 };
 
-const api=axios.create({
-    baseURL:'http://localhost:3000/staff',
-});
+
 
 export const saveStaff=createAsyncThunk('staffSlice/saveStaff',
     async (staff:StaffModel)=>{
         try{
-            const response=await api.post('/add',staff);
+            const response=await api.post('/staff/add',staff);
+            Swal.fire({
+                icon: "success",
+                title: "Staff Saved",
+                text: "The Staff has been successfully added!",
+                confirmButtonText: "OK"
+            });
             return response.data;
 
         }
         catch(error){
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!"
+            });
             console.log(error);
 
         }
@@ -27,7 +36,13 @@ export const saveStaff=createAsyncThunk('staffSlice/saveStaff',
 export const updateExitingStaff=createAsyncThunk('staffSlice/updateExitingStaff',
     async (staff:StaffModel)=>{
         try{
-            const response=await api.put(`/update/${staff.staffId}`,staff);
+            const response=await api.put(`/staff/update/${staff.staffId}`,staff);
+            Swal.fire({
+                icon: "success",
+                title: "Staff updated",
+                text: "The staff has been successfully updated!",
+                confirmButtonText: "OK"
+            });
             return response.data;
         }
         catch (error) {
@@ -39,7 +54,7 @@ export const updateExitingStaff=createAsyncThunk('staffSlice/updateExitingStaff'
 export const deleteExitingStaff=createAsyncThunk('staffSlice/ deleteExitingStaff',
     async (staffId:string)=>{
         try{
-            const response=await api.delete(`/delete/${staffId}`);
+            const response=await api.delete(`/staff/delete/${staffId}`);
             return response.data;
         }
         catch(error){
@@ -52,7 +67,7 @@ export const deleteExitingStaff=createAsyncThunk('staffSlice/ deleteExitingStaff
 
 export const getStaff=createAsyncThunk('staffSlice/getStaff',
     async ()=>{
-        const response=await api.get('/getAll');
+        const response=await api.get('/staff/getAll');
         return response.data;
 
     }

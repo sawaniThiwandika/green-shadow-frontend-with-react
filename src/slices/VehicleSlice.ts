@@ -1,22 +1,33 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import { VehicleModel } from "../model/VehicleModel.ts";
-import axios from "axios";
+import api from "../service/api-services.ts";
+import Swal from "sweetalert2";
 
 const initialState = {
     vehicles: [] as VehicleModel[],
 };
 
-const api=axios.create({
-    baseURL:'http://localhost:3000/vehicle',
-});
+
 export const saveVehicle=createAsyncThunk('vehicleSlice/saveVehicle',
     async (vehicle:VehicleModel)=>{
         try{
-            const response=await api.post('/add',vehicle);
+            const response=await api.post('/vehicle/add',vehicle);
+            Swal.fire({
+                icon: "success",
+                title: "Vehicle Saved",
+                text: "The Vehicle has been successfully added!",
+                confirmButtonText: "OK"
+            });
             return response.data;
 
         }
         catch(error){
+
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!"
+            });
             console.log(error);
 
         }
@@ -26,7 +37,13 @@ export const saveVehicle=createAsyncThunk('vehicleSlice/saveVehicle',
 export const updateExitingVehicle=createAsyncThunk('vehicleSlice/updateExitingVehicle',
     async (vehicle:VehicleModel)=>{
     try{
-        const response=await api.put(`/update/${vehicle.vehicleId}`,vehicle);
+        const response=await api.put(`/vehicle/update/${vehicle.vehicleId}`,vehicle);
+        Swal.fire({
+            icon: "success",
+            title: "Vehicle updated",
+            text: "The Vehicle has been successfully added!",
+            confirmButtonText: "OK"
+        });
         return response.data;
     }
     catch (error) {
@@ -38,7 +55,13 @@ export const updateExitingVehicle=createAsyncThunk('vehicleSlice/updateExitingVe
 export const deleteExitingVehicle=createAsyncThunk('staffSlice/ deleteExitingVehicle',
     async (vehicleId:string)=>{
         try{
-            const response=await api.delete(`/delete/${vehicleId}`);
+            const response=await api.delete(`/vehicle/delete/${vehicleId}`);
+            Swal.fire({
+                icon: "success",
+                title: "Vehicle Deleted",
+                text: "The Vehicle has been successfully deleted!",
+                confirmButtonText: "OK"
+            });
             return response.data;
         }
         catch(error){
@@ -50,7 +73,7 @@ export const deleteExitingVehicle=createAsyncThunk('staffSlice/ deleteExitingVeh
 
 export const getVehicles=createAsyncThunk('vehicleSlice/getVehicles',
     async ()=>{
-        const response=await api.get('/getAll');
+        const response=await api.get('/vehicle/getAll');
         //initialState.vehicles=response.data;
         return response.data;
 

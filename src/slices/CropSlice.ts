@@ -1,14 +1,13 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {CropModel} from "../model/CropModel";
-import axios from "axios";
+import api from "../service/api-services.ts";
+import Swal from "sweetalert2";
 
 const initialState = {
     crops: [] as CropModel[],
 };
 
-const api=axios.create({
-    baseURL:'http://localhost:3000/crop',
-});
+
 export const saveCrop = createAsyncThunk('cropSlice/saveCrop', async (crop: CropModel) => {
     try {
 
@@ -19,16 +18,26 @@ export const saveCrop = createAsyncThunk('cropSlice/saveCrop', async (crop: Crop
         formData.append("cropImage", crop.image);
         formData.append("category", crop.category);
         formData.append("season", crop.season);
-        formData.append("fieldDetails", JSON.stringify(crop.fieldDetails)); // Convert to JSON string
-
-        const response = await api.post('/add', formData, {
+        formData.append("fieldDetails", JSON.stringify(crop.fieldDetails));
+        const response = await api.post('/crop/add', formData, {
             headers: {
-                'Content-Type': 'multipart/form-data',
+                'Content-Type': 'multipart/form-data'
             },
+        });
+        Swal.fire({
+            icon: "success",
+            title: "Crop Saved",
+            text: "The Crop has been successfully added!",
+            confirmButtonText: "OK"
         });
         return response.data;
 
     } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!"
+        });
         console.error("Error saving crop:", error);
         throw error;
     }
@@ -44,12 +53,18 @@ export const updateExitingCrop=createAsyncThunk('cropSlice/updateExitingCrop',
             formData.append("cropImage", crop.image);
             formData.append("category", crop.category);
             formData.append("season", crop.season);
-            formData.append("fieldDetails", JSON.stringify(crop.fieldDetails)); // Convert to JSON string
+            formData.append("fieldDetails", JSON.stringify(crop.fieldDetails));
 
-            const response = await api.put(`/update/${crop.cropCode}`, formData, {
+            const response = await api.put(`/crop/update/${crop.cropCode}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
+            });
+            Swal.fire({
+                icon: "success",
+                title: "Crop Updated",
+                text: "The Crop has been successfully updated!",
+                confirmButtonText: "OK"
             });
             return response.data;
 
@@ -64,7 +79,13 @@ export const updateExitingCrop=createAsyncThunk('cropSlice/updateExitingCrop',
 export const deleteExitingCrop=createAsyncThunk('cropSlice/ deleteExitingCrop',
     async (cropCode:string)=>{
         try{
-            const response=await api.delete(`/delete/${cropCode}`);
+            const response=await api.delete(`/crop/delete/${cropCode}`);
+            Swal.fire({
+                icon: "success",
+                title: "Crop Deleted",
+                text: "The Crop has been successfully deleted!",
+                confirmButtonText: "OK"
+            });
             return response.data;
         }
         catch(error){
@@ -76,7 +97,7 @@ export const deleteExitingCrop=createAsyncThunk('cropSlice/ deleteExitingCrop',
 
 export const getCrops=createAsyncThunk('cropSlice/getCrops',
     async ()=>{
-        const response=await api.get('/getAll');
+        const response=await api.get('/crop/getAll',);
         return response.data;
 
     }

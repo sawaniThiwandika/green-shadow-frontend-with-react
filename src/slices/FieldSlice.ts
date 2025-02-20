@@ -1,14 +1,12 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import { FieldModel } from "../model/FieldModel";
-import axios from "axios";
+import api from "../service/api-services.ts";
+import Swal from "sweetalert2";
 
 const initialState = {
     fields: [] as FieldModel[],
 };
 
-const api=axios.create({
-    baseURL:'http://localhost:3000/field',
-});
 
 export const saveField = createAsyncThunk('fieldSlice/saveField',
     async (field: FieldModel) => {
@@ -24,14 +22,25 @@ export const saveField = createAsyncThunk('fieldSlice/saveField',
         formData.append("equipment",JSON.stringify( field.equipment));
         formData.append("staff", JSON.stringify(field.staff));
 
-        const response = await api.post('/add', formData, {
+        const response = await api.post('/field/add', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
+        Swal.fire({
+            icon: "success",
+            title: "Field Saved",
+            text: "The field has been successfully added!",
+            confirmButtonText: "OK"
+        });
         return response.data;
 
     } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!"
+        });
         console.error("Error saving field:", error);
         throw error;
     }
@@ -40,7 +49,7 @@ export const saveField = createAsyncThunk('fieldSlice/saveField',
 export const deleteExitingField=createAsyncThunk('fieldSlice/ deleteExitingField',
     async (fieldCode:string)=>{
         try{
-            const response=await api.delete(`/delete/${fieldCode}`);
+            const response=await api.delete(`/field/delete/${fieldCode}`);
             return response.data;
         }
         catch(error){
@@ -64,7 +73,7 @@ export const updateExitingField = createAsyncThunk('fieldSlice/updateField',
         formData.append("equipment",JSON.stringify( field.equipment));
         formData.append("staff", JSON.stringify(field.staff));
 
-        const response = await api.put(`/update/${field.fieldCode}`,  formData, {
+        const response = await api.put(`/field/update/${field.fieldCode}`,  formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -79,7 +88,7 @@ export const updateExitingField = createAsyncThunk('fieldSlice/updateField',
 
 export const getFields=createAsyncThunk('fieldSlice/getFields',
     async ()=>{
-        const response=await api.get('/getAll');
+        const response=await api.get('/field/getAll');
         return response.data;
 
     }
