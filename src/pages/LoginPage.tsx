@@ -1,10 +1,10 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEnvelope, FaLock, FaUser, FaRegUserCircle } from "react-icons/fa";
 import image from "../assets/green-rice-fields-in-the-rainy-season-beautiful-natural-scenery-photo.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { UserModel } from "../model/UserModel.ts";
-import { addUser } from "../slices/UserSlice.ts";
+import { login, register} from "../slices/UserSlice.ts";
 
 export function LoginPage() {
     const [userName, setUserName] = useState("");
@@ -13,25 +13,21 @@ export function LoginPage() {
     const [role, setRole] = useState("");
     const [isSignup, setIsSignup] = useState(false);
 
-    const users = useSelector((state: any) => state.userSlice.users);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const isAuthenticated = useSelector(
+        (state:any) => state.userSlice.isAuthenticated);
+
     const handleLogin = () => {
+
         if (!userName || !password) {
             alert("Please enter both email and password");
             return;
         }
+        const user: UserModel = { userEmail: userName,userPassword: password }
+        dispatch(login(user));
 
-        const foundUser = users.find(
-            (user: UserModel) => user.userEmail === userName && user.userPassword === password
-        );
-
-        if (foundUser) {
-            navigate("/app/dashboard");
-        } else {
-            alert("Invalid username or password!");
-        }
     };
 
     const handleSignup = () => {
@@ -45,10 +41,15 @@ export function LoginPage() {
         }
 
         const newUser = new UserModel(userName, password, role);
-        dispatch(addUser(newUser));
+        dispatch(register(newUser));
         setIsSignup(false);
         alert("Account created successfully!");
     };
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/app/dashboard");
+        }
+    }, [isAuthenticated])
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-cover bg-center" style={{ backgroundImage: `url(${image})` }}>
