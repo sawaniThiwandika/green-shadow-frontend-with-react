@@ -1,7 +1,7 @@
 export class UserModel {
     userEmail: string;
     userPassword: string;
-    userRole: string;
+    userRole?: string;
 
     constructor(userEmail: string, userPassword: string, userRole: string) {
         this.userEmail = userEmail;
