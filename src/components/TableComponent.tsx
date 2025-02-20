@@ -1,6 +1,4 @@
-import React from "react";
-
-export function TableComponent({ dataSource, columns, isLoading }) {
+export function TableComponent({ dataSource = [], columns, isLoading }) {
     if (isLoading) {
         return (
             <div className="text-center py-4">
@@ -26,7 +24,7 @@ export function TableComponent({ dataSource, columns, isLoading }) {
                 </thead>
                 <tbody>
                 {dataSource.length > 0 ? (
-                    dataSource.map((data, index) => {
+                    dataSource.map((data:any, index:number) => {
                         const rowKey =
                             data.vehicleId || data.id || data.key || `row-${index}`;
                         return (

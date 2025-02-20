@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 export function ModalComponent({ title, isOpen, onClose, children }) {
     if (!isOpen) return null;
 
@@ -11,6 +12,7 @@ export function ModalComponent({ title, isOpen, onClose, children }) {
                     <button onClick={onClose} className="text-gray-500">
                         &times;
                     </button>
+
                 </div>
 
                 <div className="max-h-96 overflow-y-auto">

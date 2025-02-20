@@ -1,4 +1,4 @@
-import React from "react";
+
 
 export function CropCard({
                              cropCode,
@@ -20,8 +20,11 @@ export function CropCard({
     fieldDetails: string[];
     onUpdate: (cropCode: string) => void;
     onDelete: (cropCode: string) => void;
+
 }) {
     return (
+
+
         <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 hover:shadow-xl">
 
             <img

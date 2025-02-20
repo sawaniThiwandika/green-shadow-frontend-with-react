@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import {Link, Navigate, useNavigate} from "react-router-dom";
-import {AiOutlineMenuFold, AiOutlineMenuUnfold, AiOutlineBars, AiFillTool, AiOutlineClose} from "react-icons/ai";
-import {GiField, GiHamburger} from "react-icons/gi";
-import {BiLeaf, BiLogOut, BiMenu, BiNote} from "react-icons/bi";
+import {Link} from "react-router-dom";
+import { AiOutlineBars, AiFillTool, AiOutlineClose} from "react-icons/ai";
+import {GiField} from "react-icons/gi";
+import {BiLeaf, BiMenu, BiNote} from "react-icons/bi";
 import { AiOutlineCar } from "react-icons/ai";
 import { AiOutlineUser } from "react-icons/ai";
 import logo from '../assets/logo.png';
-import {BsPerson, BsTools} from "react-icons/bs";
+import {BsPerson} from "react-icons/bs";
 import {HiLogout} from "react-icons/hi";
 
 export function Navigation() {

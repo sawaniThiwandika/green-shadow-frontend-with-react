@@ -45,24 +45,6 @@ export function VehiclePage() {
         setIsModalOpen(true);
     }
 
-    // const dataSource = [
-    //     {
-    //         key: '1',
-    //         vehicleId: 'V001',
-    //         type: 'Tractor',
-    //         model: 'John Deere X9',
-    //         licensePlate: 'ABC-1234',
-    //         assignedField: 'Field 1',
-    //     },
-    //     {
-    //         key: '2',
-    //         vehicleId: 'V002',
-    //         type: 'Truck',
-    //         model: 'Ford F-150',
-    //         licensePlate: 'XYZ-5678',
-    //         assignedField: 'Field 3',
-    //     },
-    // ];
 
     function handleUpdate(record) {
         const selectv = vehicleList.find(vehicle => vehicle.vehicleId === record.vehicleId);
@@ -144,14 +126,6 @@ export function VehiclePage() {
 
             <div className="flex flex-col sm:flex-row items-center justify-between mb-4">
                 <div className="flex-grow flex justify-center mb-4 sm:mb-0">
-                   {/* <div className="flex items-center border border-gray-300 rounded-md p-2 w-full max-w-md">
-                        <FaSearch className="text-gray-600 mr-2" />
-                        <input
-                            type="text"
-                            placeholder="Search"
-                            className="outline-none px-2 py-1 w-full"
-                        />
-                    </div>*/}
                     <SearchBarComponent placeHolder={"Search Vehicle..."} onSearch={setSearchQuery}/>
                 </div>
 

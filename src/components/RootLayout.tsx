@@ -17,6 +17,7 @@ const RootLayout = () => {
                 <main className="flex-1 p-6 overflow-auto bg-white">
                     <Outlet/>
                 </main>
+
             </div>
 
 
