@@ -53,7 +53,6 @@ export function EquipmentForm({onSubmit, initialData}) {
         >
             <div className="mb-4">
                 <LabelComponent htmlFor={"equipmentId"} text={"Equipment ID"}/>
-                {/* <label  className="block text-sm font-medium text-gray-700">Equipment ID</label>*/}
                 <Input
                     type="text"
                     id="equipmentId"
@@ -65,7 +64,7 @@ export function EquipmentForm({onSubmit, initialData}) {
             </div>
 
             <div className="mb-4">
-                {/*<label className="block text-sm font-medium text-gray-700">Equipment Name</label>*/}
+
                 <LabelComponent htmlFor={"equipmentName"}  text={"Equipment Name"}/>
                 <Input
                     type="text"
@@ -80,7 +79,7 @@ export function EquipmentForm({onSubmit, initialData}) {
             <div className="mb-4">
                 <label/>
                 <LabelComponent htmlFor={"equipmentType"} text={"Equipment Type"}/>
-               {/* <label className="block text-sm font-medium text-gray-700">Equipment Type</label>*/}
+
                 <Input
                     type="text"
                     id="equipmentType"
@@ -92,7 +91,7 @@ export function EquipmentForm({onSubmit, initialData}) {
             </div>
 
             <div className="mb-4">
-               {/* <label className="block text-sm font-medium text-gray-700">Equipment Status</label>*/}
+
                 <LabelComponent htmlFor={"equipmentStatus"} text={"Equipment Status"}/>
                 <select
                     id="equipmentStatus"
@@ -107,7 +106,7 @@ export function EquipmentForm({onSubmit, initialData}) {
             </div>
 
             <div className="mb-4">
-                {/*<label className="block text-sm font-medium text-gray-700">Assigned Field</label>*/}
+
                 <LabelComponent htmlFor={"assignedField"} text={"Assigned Field"}/>
                 <select
                     id="assignedField"
@@ -142,6 +141,7 @@ export function EquipmentForm({onSubmit, initialData}) {
                 <Button
                     type="primary"
                     className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                    onClick={handleSubmit}
                 >
                     Save
                 </Button>

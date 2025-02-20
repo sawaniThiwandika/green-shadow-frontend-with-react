@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { VehicleModel } from "../../model/VehicleModel";
 import {useDispatch, useSelector} from "react-redux";
-import {saveVehicle, updateExitingVehicle, updateVehicle} from "../../slices/VehicleSlice.ts";
+import {saveVehicle, updateExitingVehicle} from "../../slices/VehicleSlice.ts";
 import {StaffModel} from "../../model/StaffModel.ts";
 import {Button, Input} from "antd";
 import {LabelComponent} from "../LabelComponent.tsx";
-import {updateEquipment} from "../../slices/EquipmentSlice.ts";
+import Swal from "sweetalert2";
+
 
 export function VehicleFormComponent({ onSubmit, initialData }) {
+
     const dispatch = useDispatch();
+
     const staffList = useSelector((state: any) => state.staffSlice.staff);
-    //
-    // console.log("staff :",staffList);
+
     const [searchTerm, setSearchTerm] = useState("");
     const filteredStaff = staffList.filter((staff: StaffModel) =>
         staff.staffId.toLowerCase().includes(searchTerm.toLowerCase())
@@ -34,6 +36,19 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
     }, [initialData]);
 
     function handleSubmit() {
+
+        if (!vehicleId || !licensePlate || !type || !model ) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Empty fields!",
+                color:"green"
+
+            });
+            return;
+
+        }
+
         const vehicleData = new VehicleModel(
             vehicleId,
             type,
@@ -62,7 +77,7 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
             className="p-4 bg-white rounded-lg shadow-md space-y-4"
         >
             <div className="mb-4">
-                {/*<label className="block text-gray-700 mb-1">Vehicle ID</label>*/}
+
                 <LabelComponent htmlFor={"vehicleId"} text={"Vehicle ID"}/>
                 <Input
                     type="text"
@@ -74,7 +89,7 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                {/*<label className="block text-gray-700 mb-1">Type</label>*/}
+
                 <LabelComponent htmlFor={"type"} text={"Type"}/>
                 <Input
                     type="text"
@@ -86,7 +101,7 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                {/*<label className="block text-gray-700 mb-1">Model</label>*/}
+
                 <LabelComponent htmlFor={"model"} text={"Model"}/>
                 <Input
                     type="text"
@@ -98,7 +113,7 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                {/*<label className="block text-gray-700 mb-1">License Plate</label>*/}
+
                 <LabelComponent htmlFor={"licensePlate"} text={"License Plate"}/>
                 <Input
                     type="text"
@@ -110,7 +125,7 @@ export function VehicleFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4 relative">
-                {/*<label className="block text-gray-700 mb-1">Assigned Staff</label>*/}
+
                 <LabelComponent htmlFor={"assignedStaff"} text={"Assigned Staff"}/>
                 <Input
                     type="text"

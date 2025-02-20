@@ -4,6 +4,7 @@ import {saveCrop, updateExitingCrop} from "../../slices/CropSlice.ts";
 import {CropModel} from "../../model/CropModel.ts";
 import { Button ,Input} from 'antd';
 import {LabelComponent} from "../LabelComponent.tsx";
+import Swal from "sweetalert2";
 export function CropForm({onSubmit, initialData }): React.ReactElement {
     const dispatch = useDispatch();
 
@@ -30,20 +31,22 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
 
 
         if (!cropCode || !commonName || !scientificName || !cropImage || !category || !season || !fieldDetailsCrop) {
-            alert("All fields are required.");
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Empty fields!",
+
+            });
             return;
         }
-
         const crop = new CropModel(cropCode,commonName,scientificName,cropImage,category,season,fieldDetailsCrop);
 
 
         if (initialData) {
 
             dispatch(updateExitingCrop(crop));
-            alert("Crop Updated Successfully!");
         } else {
             dispatch(saveCrop(crop));
-
         }
 
         setCropCode("");
@@ -52,7 +55,6 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
         setCropImage("");
         setCategory("");
         setSeason("");
-
     };
 
     const handleFileChange = (e) => {
@@ -90,9 +92,7 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
                 />
             </div>
             <div>
-             {/*   <label htmlFor="scientificName" className="block text-sm font-medium text-gray-700">
-                    Scientific Name
-                </label>*/}
+
                 <LabelComponent htmlFor={"scientificName"} text={"Scientific Name"} />
                 <Input
                     type="text"
@@ -105,9 +105,6 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
                 />
             </div>
             <div>
-             {/*   <label htmlFor="cropImage" className="block text-sm font-medium text-gray-700">
-                    Crop Image
-                </label>*/}
                 <LabelComponent htmlFor="cropImage"  text={"Crop Image"} />
                 <Input
                     type="file"
@@ -118,9 +115,7 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
                 />
             </div>
             <div>
-               {/* <label htmlFor="category" className="block text-sm font-medium text-gray-700">
-                    Category
-                </label>*/}
+
                 <LabelComponent htmlFor="category" text={"Category"} />
                 <Input
                     type="text"
@@ -133,9 +128,6 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
                 />
             </div>
             <div>
-               {/* <label htmlFor="season" className="block text-sm font-medium text-gray-700">
-                    Season
-                </label>*/}
 
                 <LabelComponent htmlFor="season" text={"Season"}  />
                 <Input
@@ -149,9 +141,7 @@ export function CropForm({onSubmit, initialData }): React.ReactElement {
                 />
             </div>
             <div>
-               {/* <label htmlFor="fieldDetailsCrop" className="block text-sm font-medium text-gray-700">
-                    Field Details
-                </label>*/}
+
                 <LabelComponent htmlFor={"fieldDetailsCrop"} text={"Field Details"} />
                 <Input
                     type="text"

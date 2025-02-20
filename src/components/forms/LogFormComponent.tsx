@@ -7,6 +7,7 @@ import {LabelComponent} from "../LabelComponent.tsx";
 import {StaffModel} from "../../model/StaffModel.ts";
 import {FieldModel} from "../../model/FieldModel.ts";
 import {CropModel} from "../../model/CropModel.ts";
+import Swal from "sweetalert2";
 
 export function LogFormComponent({onSubmit, initialData}) {
     const dispatch = useDispatch();
@@ -41,6 +42,19 @@ export function LogFormComponent({onSubmit, initialData}) {
     }, [initialData]);
 
     const handleSubmit = () => {
+
+
+        if (!logCode || !logDate || !logDetails || !relevantStaff|| !relevantCrop ||!relevantField ) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Empty fields!",
+                color:"green"
+
+            });
+            return;
+        }
+
         const log = new LogModel(
             logCode,
             logDate,
@@ -58,7 +72,6 @@ export function LogFormComponent({onSubmit, initialData}) {
             console.log("staff list of log :"+relevantStaff[0]);
             dispatch(saveLog(log));
         }
-
         if (onSubmit) onSubmit();
     };
 
@@ -74,7 +87,6 @@ export function LogFormComponent({onSubmit, initialData}) {
             setRelevantStaff([...relevantStaff, staffId]);
         }
     };
-
 
     return (
         <form
@@ -136,7 +148,6 @@ export function LogFormComponent({onSubmit, initialData}) {
                     id={"relevantFields"}
                     onChange={(e) => setRelevantField(e.target.value)}
                     className="w-full border border-gray-300 rounded-md px-2 py-1 required"
-
                 >
 
                     <option value="">Select Field</option>
@@ -148,7 +159,6 @@ export function LogFormComponent({onSubmit, initialData}) {
 
                 </select>
             </div>
-
 
             <div className="mb-4">
                 <LabelComponent htmlFor={"relevantCrops"} text={"Relevant Crops"}/>

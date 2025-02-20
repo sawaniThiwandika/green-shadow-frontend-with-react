@@ -5,6 +5,7 @@ import {addField, saveField, updateExitingField, updateField} from "../../slices
 import {LabelComponent} from "../LabelComponent.tsx";
 import {Button, Input} from "antd";
 import {updateExitingCrop} from "../../slices/CropSlice.ts";
+import Swal from "sweetalert2";
 
 export function FieldForm({onSubmit, initialData  }) {
 
@@ -37,6 +38,19 @@ export function FieldForm({onSubmit, initialData  }) {
         const field=new FieldModel(fieldCode,fieldName,fieldLocation,fieldSize,fieldImage1,fieldCrop,fieldStaff,fieldEquipment,[]);
 
 
+        if (!fieldCode || !fieldLocation || !fieldSize || !fieldCrop|| !fieldName ) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Empty fields!",
+                color:"green"
+
+            });
+            return;
+
+        }
+
+
         if (initialData) {
 
             dispatch(updateExitingField(field));
@@ -62,7 +76,7 @@ export function FieldForm({onSubmit, initialData  }) {
 
             <div className="mb-4">
                 <LabelComponent htmlFor={"fieldCode"} text={"Field Code"}/>
-               {/* <label htmlFor="fieldCode" className="block text-sm font-medium text-gray-700">Field Code</label>*/}
+
                 <Input
                     type="text"
                     name="fieldCode"
@@ -74,7 +88,7 @@ export function FieldForm({onSubmit, initialData  }) {
             </div>
 
             <div className="mb-4">
-               {/* <label htmlFor="fieldName" className="block text-sm font-medium text-gray-700">Field Name</label>*/}
+
                 <LabelComponent htmlFor="fieldName" text={"Field Name"}/>
                 <Input
                     type="text"
@@ -87,8 +101,7 @@ export function FieldForm({onSubmit, initialData  }) {
             </div>
 
             <div className="mb-4">
-                {/*<label htmlFor="fieldLocation" className="block text-sm font-medium text-gray-700">Field
-                    Location</label>*/}
+
                 <LabelComponent htmlFor="fieldLocation" text={"Field Location"}/>
                 <Input
                     type="text"
@@ -101,8 +114,7 @@ export function FieldForm({onSubmit, initialData  }) {
             </div>
 
             <div className="mb-4">
-                {/*<label htmlFor="fieldSize" className="block text-sm font-medium text-gray-700">Field Size (in
-                    Acres)</label>*/}
+
                 <LabelComponent htmlFor="fieldSize" text={"Field Size (In Acres)"} />
                 <Input
                     type="number"
@@ -115,7 +127,7 @@ export function FieldForm({onSubmit, initialData  }) {
             </div>
 
             <div className="mb-4">
-                {/*<label htmlFor="fieldImage1" className="block text-sm font-medium text-gray-700">Field Image 1</label>*/}
+
                 <LabelComponent htmlFor="fieldImage1" text={"Field Image 1"}/>
                 <Input
                     type="file"
@@ -127,7 +139,7 @@ export function FieldForm({onSubmit, initialData  }) {
 
 
             <div className="mb-4">
-                {/*<label htmlFor="crops" className="block text-sm font-medium text-gray-700">Crops</label>*/}
+
                 <LabelComponent htmlFor="crops" text={"Crops"}/>
                 <Input
                     type="text"
@@ -140,7 +152,7 @@ export function FieldForm({onSubmit, initialData  }) {
             </div>
 
             <div className="mb-4">
-               {/* <label htmlFor="staff" className="block text-sm font-medium text-gray-700">Staff</label>*/}
+
                 <LabelComponent htmlFor="staff" text={"Staff"}/>
                 <Input
                     type="text"
@@ -152,7 +164,7 @@ export function FieldForm({onSubmit, initialData  }) {
                 />
             </div>
             <div className="mb-4">
-               {/* <label htmlFor="equipment" className="block text-sm font-medium text-gray-700">Equipments</label>*/}
+
                 <LabelComponent htmlFor="equipment" text={"Equipments"}/>
                 <Input
                     type="text"
@@ -186,9 +198,7 @@ export function FieldForm({onSubmit, initialData  }) {
                 <Button
                     type="primary"
                     className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                    onClick={handleSubmit}
-                >
-
+                    onClick={handleSubmit}>
                     Save
                 </Button>
             </div>

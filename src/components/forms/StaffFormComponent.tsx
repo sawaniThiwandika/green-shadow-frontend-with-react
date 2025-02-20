@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addStaff, saveStaff, updateExitingStaff, updateStaff} from "../../slices/StaffSlice.ts";
 import {Button, Input} from "antd";
 import {LabelComponent} from "../LabelComponent.tsx";
+import Swal from "sweetalert2";
 
 export function StaffFormComponent({ onSubmit, initialData }) {
     const dispatch = useDispatch();
@@ -39,6 +40,17 @@ export function StaffFormComponent({ onSubmit, initialData }) {
 
     function handleSubmit() {
 
+        if (!staffId || !firstName || !lastName || !address|| !designation || !gender || !contact || !email) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Empty fields!",
+                color:"green"
+
+            });
+            return;
+        }
+
         const staffData = new StaffModel(
             staffId,
             firstName,
@@ -73,7 +85,7 @@ export function StaffFormComponent({ onSubmit, initialData }) {
             if (onSubmit) onSubmit(e);
         }}>
             <div className="mb-4">
-               {/* <label className="block text-gray-700 mb-1">Staff ID</label>*/}
+
                 <LabelComponent htmlFor={"staffId"} text={"Staff ID"}/>
                 <Input
                     type="text"
@@ -86,7 +98,7 @@ export function StaffFormComponent({ onSubmit, initialData }) {
             </div>
             <div className="mb-4">
                 <LabelComponent htmlFor={"fName"} text={"FirstName"}/>
-               {/* <label className="block text-gray-700 mb-1">First Name</label>*/}
+
                 <Input
                     type="text"
                     name="fname"
@@ -97,7 +109,7 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                {/*<label className="block text-gray-700 mb-1">Last Name</label>*/}
+
                 <LabelComponent htmlFor={"lName"} text={"Last Name"}/>
                 <Input
                     type="text"
@@ -109,7 +121,7 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-             {/*   <label className="block text-gray-700 mb-1">Address</label>*/}
+
                 <LabelComponent htmlFor={"address"} text={"Address"}/>
                 <Input
                     type="text"
@@ -121,7 +133,7 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                {/*<label className="block text-gray-700 mb-1">Designation</label>*/}
+
                 <LabelComponent htmlFor={"designation"} text={"Designation"}/>
                 <Input
                     type="text"
@@ -133,7 +145,7 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-            {/*    <label className="block text-gray-700 mb-1">Gender</label>*/}
+
                 <LabelComponent htmlFor={"gender"} text={"Gender"}/>
                 <select
                     name="gender"
@@ -149,7 +161,7 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 </select>
             </div>
             <div className="mb-4">
-               {/* <label className="block text-gray-700 mb-1">Contact No.</label>*/}
+
                 <LabelComponent htmlFor={"contactNo"} text={"Contact No"}/>
                 <Input
                     type="text"
@@ -161,7 +173,7 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-             {/*   <label className="block text-gray-700 mb-1">Email</label>*/}
+
                 <LabelComponent htmlFor={"email"} text={"Email"}/>
                 <Input
                     type="email"
@@ -173,7 +185,7 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 />
             </div>
             <div className="mb-4">
-                {/*<label className="block text-gray-700 mb-1">Assigned Field</label>*/}
+
                 <LabelComponent htmlFor={"assignedField"} text={"Assigned Field"}/>
                 <select
                     name="assignedField"
@@ -191,7 +203,7 @@ export function StaffFormComponent({ onSubmit, initialData }) {
                 </select>
             </div>
             <div className="mb-4">
-                {/*<label className="block text-gray-700 mb-1">Assigned Vehicle</label>*/}
+
                 <LabelComponent htmlFor={"assignedVehicle"} text={"Assigned Vehicle"}/>
                 <select
                     name="assignedVehicle"
